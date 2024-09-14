@@ -13,7 +13,7 @@
 # SQL
 Structured Query Language (SQL) is a special-purpose programming language designed for managing data held in a Relational 
 Database Management System (RDBMS). SQL-like languages can also be used in Relational Data Stream Management Systems
-(RDSMS), or in "not-only SQL" (NoSQL) databases.
+(RDBMS), or in "not-only SQL" (NoSQL) databases.
 
 # Statements in SQL
 ### DDL(Data Definition Language)
@@ -121,9 +121,9 @@ WHERE A.emp_sup = B.emp_id;
 Referential integrity refers to the consistency that must be maintained between primary and foreign keys, i.e. every 
 foreign key value must have a corresponding primary value.
 
-## ACID
-The full form of ACID is Atomicity, Consistency, Isolation, and Durability. To check the reliability of the transactions, 
-ACID properties are used.
+# ACID
+The full form of ACID is **Atomicity**, **Consistency**, **Isolation**, and **Durability**. To check the reliability of 
+the transactions, ACID properties are used.
 * **Atomicity:** Atomicity refers to completed or failed transactions, where transaction refers to a single logical 
   operation on data. This implies that if any aspect of a transaction fails, the whole transaction fails and the database 
   state remains unchanged.

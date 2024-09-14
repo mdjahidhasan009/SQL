@@ -59,7 +59,7 @@ CREATE TABLE Employees (
 ```
 Here could you ﬁnd a database diagram.
 
-<img src="./images/create_table/create_table.png" alt="create_table" />
+<img src="../images/create_table/create_table.png" alt="create_table" />
 
 The column CityID of table Employees will reference to the column CityID of table Cities. Below you could ﬁnd
 the syntax to make this.
