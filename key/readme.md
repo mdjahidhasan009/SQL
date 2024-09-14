@@ -32,7 +32,16 @@ A composite key refers to a combination of two or more columns that can uniquely
 below example the studentId and firstname can be grouped to uniquely identify every tuple in the table.
 
 
+### Primary Key VS Unique Key
+* We can have only one primary key in a table whereas we can have more than one unique key in a table.
+* Primary key cannot have NULL value whereas a Unique key may have only one null value.
+* By default, a primary key is a Clustered Index whereas by default, a Unique key is a unique non-clustered index.
+* A primary key supports an auto increment value whereas a unique key doesn't support auto increment value.
 
+### Composite Primary Key
+A Composite primary key is a set of columns whose values uniquely identify every row in a table. What it means is that,
+table which contains composite primary key will be indexed based on columns specified in the primary key. This key will
+be referred in Foreign Key tables.
 
 Source:
 * https://www.interviewbit.com/dbms-interview-questions/

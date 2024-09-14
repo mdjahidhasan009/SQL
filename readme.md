@@ -15,7 +15,7 @@ Structured Query Language (SQL) is a special-purpose programming language design
 Database Management System (RDBMS). SQL-like languages can also be used in Relational Data Stream Management Systems
 (RDSMS), or in "not-only SQL" (NoSQL) databases.
 
-## Statements in SQL
+# Statements in SQL
 ### DDL(Data Definition Language)
 It is used to **define the database structure such as tables**. It includes three statements such as **Create**, **Alter** 
 and **Drop**.
@@ -49,72 +49,25 @@ There is also a (recently added) `MERGE` statement which can perform all 3 write
 ### DCL(Data Control Language)
 These statements are used to set privileges such as Grant and Revoke database access permission to the specific user.
 
-## SQL Constraints
-Constraints are used to set rules for all records in the table. If any constraints get violated then it can abort the 
-action that caused it.
-
-Constraints are defined while creating the database itself with `CREATE TABLE` statement or even after the table is 
-created once with `ALTER`.
-
-There are 5 major constraints are used in SQL, such as 
-### `NOT NULL`
-That indicates that the column must have some value and cannot be left null.
-### `UNIQUE`
-This constraint is used to ensure that each row and column has unique value and no value is being repeated in any row or
-column.
-### `PRIMARY KEY`
-This constraint is used in association with `NOT NULL` and `UNIQUE` constraints such as on one or the combination of more
-than one column to identify the particular record with a unique identify. A table can have only one primary key that 
-consists of single or multiple fields.
-### `FOREIGN KEY`
-It is used to ensure the referential integrity of data in the table and also matches the value in one table with another
-using primary key.
-### `CHECK`
-It is used to ensure whether the value in columns fulfills the specified condition. We can limit the values or type of 
-data that can be stored in a column. They are used to enforce domain integrity.
-
-## Data Integrity
+# Data Integrity
 Data Integrity defines the accuracy as well as the consistency of the data stored in a database. It also defines 
 integrity constraints to enforce business rules on the data when it is entered into an application or a database.
 
-## Collation
+# Collation
 Collation is defined as a set of rules that determine how data can be sorted as well as compared. Character data is sorted
 using the rules that define the correct character sequence along with options for specifying case-sensitivity, character
 width etc.
 
-## Datawarehouse
+# Datawarehouse
 Datawarehouse refers to a central repository of data where the data is assembled from multiple sources of information. 
 Those data are consolidated, transformed and made available for the mining as well as online processing. Warehouse data 
 also have a subset of data called Data Marts.
 
-## Primary Key VS Unique Key
-* We can have only one primary key in a table whereas we can have more than one unique key in a table.
-* Primary key cannot have NULL value whereas a Unique key may have only one null value.
-* By default, a primary key is a Clustered Index whereas by default, a Unique key is a unique non-clustered index.
-* A primary key supports an auto increment value whereas a unique key doesn't support auto increment value.
-
-## Composite Primary Key
-A Composite primary key is a set of columns whose values uniquely identify every row in a table. What it means is that, 
-table which contains composite primary key will be indexed based on columns specified in the primary key. This key will 
-be referred in Foreign Key tables.
-
-## Difference between DROP and TRUNCATE statements
-If a table is dropped, all things associated with the tables are dropped as well. This includes - the relationships defined 
-on the table with other tables, the integrity checks and constraints, access privileges and other grants that the table 
-has. To create and use the table again in its original form, all these relations, checks, constraints, privileges and 
-relationships need to be redefined. However, if a table is truncated, none of the above problems exist and the table 
-retains its original structure.
-
-## Difference between DELETE and TRUNCATE statements
-The TRUNCATE command is used to delete all the rows from the table and free the space containing the table.
-The DELETE command deletes only the rows from the table based on the condition given in the where clause or deletes all 
-the rows from the table if no condition is specified. But it does not free the space containing the table.
-
-## User Defined Datatypes
+# User Defined Datatypes
 User defined datatypes let you extend the base SQL Server datatypes by providing a descriptive name, and format to the 
-database. Take for example, in your database, there is a column called Flight_Num which appears in many tables. In all 
-these tables it should be varchar(8). In this case you could create a user defined datatype called Flight_num_type of
-varchar(8) and use it across all your tables.
+database. Take for example, in your database, there is a column called `Flight_Num` which appears in many tables. In all 
+these tables it should be `varchar(8)`. In this case you could create a user defined datatype called `Flight_num_type` of
+`varchar(8)` and use it across all your tables.
 
 ## Isolation levels
 An isolation level determines the degree of isolation of data between concurrent transactions. The default SQL Server 
