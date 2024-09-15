@@ -200,5 +200,6 @@ plan"(located on the query drop-down menu). If this option is turned on it will 
 window when query is ran again.
 
 
-[Identifier](./identifier.md)
-[Data Types](./data_types.md)
+* [Identifier](./identifier.md)
+* [Data Types](./data_types.md)
+* [null](./null.md)
