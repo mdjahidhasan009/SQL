@@ -198,3 +198,7 @@ performance characteristics of a query or stored procedure since the plan is the
 cache and use to execute the stored procedure or query. From within query analyzer is an option called "Show Execution
 plan"(located on the query drop-down menu). If this option is turned on it will display query execution plan in separate 
 window when query is ran again.
+
+
+[Identifier](./identifier.md)
+[Data Types](./data_types.md)
