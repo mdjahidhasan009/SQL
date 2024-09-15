@@ -203,3 +203,4 @@ window when query is ran again.
 * [Identifier](./identifier.md)
 * [Data Types](./data_types.md)
 * [null](./null.md)
+* [Some SQL Queries](./example_databases_and_tables.md)

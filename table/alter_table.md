@@ -46,5 +46,65 @@ This Drops a constraint called DefaultSalary from the employees table deﬁnitio
 **Note:** Ensure that constraints of the column are dropped before dropping a column.
 
 
+## Update (Rename) a Column
+
+To rename a column in SQL, you use the `ALTER TABLE` command. The syntax varies depending on the SQL dialect you are
+using.
+
+### MySQL
+
+In MySQL, use the `ALTER TABLE` command with the `CHANGE` keyword to rename a column. You must specify both the old
+column name, the new column name, and the column's data type.
+
+```sql
+ALTER TABLE table_name
+CHANGE old_column_name new_column_name data_type;
+```
+
+#### Example:
+If you want to change the column name `FName` to `FirstName` in the `Employee` table:
+
+```sql
+ALTER TABLE Employee
+CHANGE FName FirstName VARCHAR(35);
+```
+
+### SQL Server
+
+In SQL Server, use the `sp_rename` stored procedure to rename a column.
+
+```sql
+EXEC sp_rename 'table_name.old_column_name', 'new_column_name', 'COLUMN';
+```
+
+#### Example:
+To change `FName` to `FirstName` in the `Employee` table in SQL Server:
+
+```sql
+EXEC sp_rename 'Employee.FName', 'FirstName', 'COLUMN';
+```
+
+### PostgreSQL and Oracle
+
+In PostgreSQL and Oracle, you use the `ALTER TABLE` command with the `RENAME COLUMN` clause.
+
+```sql
+ALTER TABLE table_name
+RENAME COLUMN old_column_name TO new_column_name;
+```
+
+#### Example:
+To change `FName` to `FirstName` in the `Employee` table:
+
+```sql
+ALTER TABLE Employee
+RENAME COLUMN FName TO FirstName;
+```
+
+#### Summary:
+- **MySQL**: Use `CHANGE` with `ALTER TABLE`.
+- **SQL Server**: Use `sp_rename`.
+- **PostgreSQL/Oracle**: Use `RENAME COLUMN` with `ALTER TABLE`.
+
 Sources:
 * [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
