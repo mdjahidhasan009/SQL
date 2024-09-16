@@ -1,20 +1,50 @@
 # Select
-It deﬁnes what result set should be returned by the
-query, and is almost always used in conjunction with the FROM clause, which deﬁnes what part(s) of the database
-should be queried.
+It defines what result set should be returned by the query, and is almost always used in conjunction with the `FROM`
+clause, which defines what part(s) of the database should be queried.
 
 ## Wildcard character(*)
 We use wildcard character(*) to select all columns in a query
 
 Consider a database with the following two tables.<br/>
 **Employees table**
+```sql
+CREATE TABLE Employees(
+	Id INT NOT NULL AUTO_INCREMENT,
+    FName VARCHAR(25) NOT NULL,
+    LName VARCHAR(25) NOT NULL,
+    DeptId INT NOT NULL,
+    FOREIGN KEY (DeptId) REFERENCES Departments(Id),
+    PRIMARY KEY (Id)
+);
 
-| Id | FName  | LName  | DeptId |
-|----|--------|--------|--------|
-| 1  | James  | Smith  | 3      |
-| 2  | John   | Johnson| 4      |
+INSERT INTO Employees 
+	(FName, LName, Deptid)
+VALUES
+     ("James", "Smith", 3),
+     ("John", "Johanson", 4)
+;
+```
+| Id | FName  | LName   | DeptId |
+|----|--------|---------|--------|
+| 1  | James  | Smith   | 3      |
+| 2  | John   | Johnson | 4      |
 
-**Departments table:**
+**Departments table:**<br/>
+```sql
+CREATE TABLE Departments (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(10) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+INSERT INTO Departments
+   (Name)
+VALUES
+   ("Sales"),
+   ("Marketing"),
+   ("Finance"),
+   ("IT");
+```
 
 | Id | Name      |
 |----|-----------|
@@ -26,18 +56,18 @@ Consider a database with the following two tables.<br/>
 `*` is the wildcard character used to select all available columns in a table.
 
 When used as a substitute for explicit column names, it returns all columns in all tables that a query is selecting
-`FROM`. This eﬀect applies to **all tables** the query accesses through its `JOIN` clauses.
+`FROM`. This effect applies to **all tables** the query accesses through its `JOIN` clauses.
 
-Consider the following query: `SELECT * FROM Employees`<br/>
-It will return all ﬁelds of all rows of the Employees table:
+Consider the following query: `SELECT * FROM Employees;`<br/>
+It will return all fields of all rows of the Employees table:
 
-| Id | FName  | LName  | Dept  |
-|----|--------|--------|-------|
-| 1  | James  | Smith  | 3     |
-| 2  | John   | Johnson| 4     |
+| Id | FName  | LName   | Dept  |
+|----|--------|---------|-------|
+| 1  | James  | Smith   | 3     |
+| 2  | John   | Johnson | 4     |
 
 ### Dot notation
-To select all values from a speciﬁc table, the wildcard character can be applied to the table with dot notation.<br/>
+To select all columns from a specific table, the wildcard character can be applied to the table with dot notation.<br/>
 Consider the following query:
 ```sql
 SELECT 
@@ -50,55 +80,73 @@ JOIN
     ON Departments.id = Employees.DeptId
 ;
 ```
-This will return a data set with **all ﬁelds on the Employee table**, followed by **just the `Name` ﬁeld in the Departments**
+This will return a data set with **all fields on the Employee table**, followed by **just the `Name` field in the 
+Departments**
 table:
 
-| Id | FName  | LName  | DeptId | Name    |
-|----|--------|--------|--------|---------|
-| 1  | James  | Smith  | 3      | Finance |
-| 2  | John   | Johnson| 4      | IT      |
+| Id | FName  | LName   | DeptId | Name    |
+|----|--------|---------|--------|---------|
+| 1  | James  | Smith   | 3      | Finance |
+| 2  | John   | Johnson | 4      | IT      |
 
 #### Warnings Against Use
 It is generally advised that using `*` is avoided in production code where possible, as it can cause a number of
 potential problems including:
 1. Excess IO, network load, memory use, and so on, due to the database engine reading data that is not needed
-   and transmitting it to the front-end code. This is particularly a concern where there might be large ﬁelds such
-   as those used to store long notes or attached ﬁles.
+   and transmitting it to the front-end code. This is particularly a concern where there might be large fields such
+   as those used to store long notes or attached files.
 2. Further excess IO load if the database needs to spool internal results to disk as part of the processing for a
-   query more complex than `SELECT <columns> FROM <table>`.
+   query more complex than `SELECT <columns> FROM <table>;`.
 3. Extra processing (and/or even more IO) if some of the unneeded columns are:
    * computed columns in databases that support them
    * in the case of selecting from a view, columns from a table/view that the query optimiser could
    otherwise optimise out
 4. The potential for unexpected errors if columns are added to tables and views later that results ambiguous
    column names. For example `SELECT * FROM orders JOIN people ON people.id = orders.personid ORDER
-   BY displayname` - if a column column called displayname is added to the orders table to allow users to give
+   BY displayname` - if a column called displayname is added to the orders table to allow users to give
    their orders meaningful names for future reference then the column name will appear twice in the output so
    the `ORDER BY` clause will be ambiguous which may cause errors ("ambiguous column name" in recent MS SQL
    Server versions), and if not in this example your application code might start displaying the order name
-   where the person name is intended because the new column is the ﬁrst of that name returned, and so on.
+   where the person name is intended because the new column is the first of that name returned, and so on.
 
 #### When Can You Use *, Bearing The Above Warning In Mind?
-While best avoided in production code, using `*` is ﬁne as a shorthand when performing manual queries against the
+While best avoided in production code, using `*` is fine as a shorthand when performing manual queries against the
 database for investigation or prototype work.
 
 Sometimes design decisions in your application make it unavoidable (in such circumstances, prefer `tablealias.*`
 over just `*` where possible).
 
 When using `EXISTS`, such as `SELECT A.col1, A.Col2 FROM A WHERE EXISTS (SELECT * FROM B where A.ID =
-B.A_ID)`, we are not returning any data from B. Thus a join is unnecessary, and the engine knows no values from B
-are to be returned, thus no performance hit for using `*`. Similarly `COUNT(*)` is ﬁne as it also doesn't actually return
-any of the columns, so only needs to read and process those that are used for ﬁltering purposes.
+B.A_ID);`, we are not returning any data from B. Thus a join is unnecessary, and the engine knows no values from B
+are to be returned, thus no performance hit for using `*`. Similarly `COUNT(*)` is fine as it also doesn't actually 
+return any of the columns, so only needs to read and process those that are used for filtering purposes.
 
 
 ## SELECT Using Column Aliases
 Column aliases are used mainly to shorten code and make column names more readable.
 
-Code becomes shorter as long table names and unnecessary identiﬁcation of columns (e.g., there may be 2 IDs in the
+Code becomes shorter as long table names and unnecessary identification of columns (e.g., there may be 2 IDs in the
 table, but only one is used in the statement) can be avoided. Along with table aliases this allows you to use longer
 descriptive names in your database structure while keeping queries upon that structure concise.
 
-Furthermore they are sometimes required, for instance in views, in order to name computed outputs.
+Furthermore, they are sometimes required, for instance in views, in order to name computed outputs.
+
+```sql
+--First we add a middle name column to the Employees table
+ALTER TABLE Employees
+ADD MName VARCHAR(25);
+
+--Clear previous data from the Employees table
+TRUNCATE TABLE Employees;
+
+--Insert new data into the Employees table
+INSERT INTO Employees
+	(FName, MName, LName, DeptId)
+VALUES
+	  ('James', 'John', 'Smith', 3),
+    ('John', 'James', 'Johnson', 4),
+    ('Michael', 'Marcus', 'Williams', 2);
+```
 
 **All versions of SQL**
 Aliases can be created in all versions of SQL using double quotes `(")`.
@@ -110,7 +158,7 @@ SELECT
    LName AS "Last Name"
 FROM Employee;
 ```
-**Diﬀerent Versions of SQL**
+**Different Versions of SQL**
 You can use single quotes `(')`, double quotes `(")` and square brackets `([])` to create an alias in Microsoft SQL 
 Server.
 ```sql
@@ -195,8 +243,8 @@ SELECT
    LName as "WHERE"
 FROM Employees
 ```
-**Diﬀerent Versions of SQL**
-Likewise, you can escape keywords in MSSQL with all diﬀerent approaches:
+**Different Versions of SQL**
+Likewise, you can escape keywords in MSSQL with all different approaches:
 ```sql
 SELECT
    FName AS "SELECT",
@@ -210,7 +258,8 @@ FROM Employees
 | John     | James   | Johnson   | 
 | Michael  |  Marcus | Williams  | 
 
-Also, a column alias may be used any of the ﬁnal clauses of the same query, such as an `ORDER BY`:
+
+Also, a column alias may be used any of the final clauses of the same query, such as an `ORDER BY`:
 ```sql
 SELECT
    FName AS FirstName,
@@ -251,7 +300,8 @@ The result will be:
 | 2137921892  | dmiller@example.net       | EMAIL            | 
 | NULL        | richard0123@example.com   |  EMAIL           |
 
-If multiple tables are joined together, you can select columns from speciﬁc tables by specifying the table name
+
+If multiple tables are joined together, you can select columns from specific tables by specifying the table name
 before the column name: [table_name].[column_name]
 ```sql
 SELECT
@@ -264,11 +314,11 @@ FROM
 LEFT JOIN
    Orders ON Orders.CustomerId = Customers.Id
 ```
-** `AS` OrderId means that the Id ﬁeld of Orders table will be returned as a column named OrderId. See selecting
+** `AS` OrderId means that the `Id` field of Orders table will be returned as a column named OrderId. See selecting
 with column alias for further information.
 
 To avoid using long table names, you can use table aliases. This mitigates the pain of writing long table names for
-each ﬁeld that you select in the joins. If you are performing a self join (a join between two instances of the same
+each field that you select in the joins. If you are performing a self join (a join between two instances of the same
 table), then you must use table aliases to distinguish your tables. We can write a table alias like `Customers c` or
 `Customers AS c`. Here `c` works as an alias for `Customers` and we can select let's say `Email` like this: `c.Email`.
 ```sql
@@ -282,8 +332,8 @@ LEFT JOIN
    Orders o ON o.customerId = c.Id
 ```
 
-## Selecting speciﬁed number of records
-The SQL 2008 standard deﬁnes the `FETCH FIRST` clause to limit the number of records returned.
+# Selecting specified number of records
+The SQL 2008 standard defines the `FETCH FIRST` clause to limit the number of records returned.
 ```sql
 SELECT Id, ProductName, UnitPrice, Package
 FROM Product
@@ -312,7 +362,7 @@ To do the same in MySQL or PostgreSQL the `LIMIT` keyword must be used:
 SELECT Id, ProductName, UnitPrice, Package
 FROM Product
 ORDER BY UnitPrice DESC
-LIMIT 10
+LIMIT 10 OFFSET 0
 ```
 In Oracle the same can be done with `ROWNUM`:
 ```sql
@@ -337,19 +387,21 @@ ORDER BY UnitPrice DESC
 | 28 | Rössle Sauerkraut       | 45.60     | 25 - 825 g cans      |
 
 **Vendor Nuances:**
-It is important to note that the `TOP` in Microsoft SQL operates after the `WHERE` clause and will return the speciﬁed
+It is important to note that the `TOP` in Microsoft SQL operates after the `WHERE` clause and will return the specified
 number of results if they exist anywhere in the table, while ROWNUM works as part of the `WHERE` clause so if other
-conditions do not exist in the speciﬁed number of rows at the beginning of the table, you will get zero results when
+conditions do not exist in the specified number of rows at the beginning of the table, you will get zero results when
 there could be others to be found.
 
-## Selecting with Condition
+
+
+# Selecting with Condition
 The basic syntax of SELECT with WHERE clause is:
 ```sql
 SELECT column1, column2, column3
 FROM table_name
 WHERE [condition]
 ```
-The [condition] can be any SQL expression, speciﬁed using comparison or logical operators like `>, <, =, <>, >=, <=,
+The [condition] can be any SQL expression, specified using comparison or logical operators like `>, <, =, <>, >=, <=,
 LIKE, NOT, IN, BETWEEN` etc.
 
 The following statement returns all columns from the table `'Cars'` where the status column is `'READY'`:
@@ -357,8 +409,8 @@ The following statement returns all columns from the table `'Cars'` where the st
 SELECT * FROM Cars WHERE status = 'READY'
 ```
 
-## Selecting with CASE
-When results need to have some logic applied 'on the ﬂy' one can use `CASE` statement to implement it.
+# Selecting with CASE
+When results need to have some logic applied 'on the fly' one can use `CASE` statement to implement it.
 ```sql
 SELECT CASE WHEN Col1 < 50 THEN 'under' ELSE 'over' END threshold
 FROM TableName
@@ -413,14 +465,14 @@ SELECT e.Fname, e.LName
 FROM Employees e
 ```
 The Employees table is given the alias 'e' directly after the table name. This helps remove ambiguity in scenarios
-where multiple tables have the same ﬁeld name and you need to be speciﬁc as to which table you want to return
+where multiple tables have the same field name, and you need to be specific as to which table you want to return
 data from.
 ```sql
 SELECT e.Fname, e.LName, m.Fname AS ManagerFirstName
 FROM Employees e
    JOIN Managers m ON e.ManagerId = m.Id
 ```
-Note that once you deﬁne an alias, you can't use the canonical table name anymore. i.e.,
+Note that once you define an alias, you can't use the canonical table name anymore. i.e.,
 ```sql
 SELECT e.Fname, Employees.LName, m.Fname AS ManagerFirstName
 FROM Employees e
@@ -440,7 +492,7 @@ FROM Employees
      ( SELECT Id AS ManagerId, Fname AS ManagerFirstName
          FROM Managers ) m;
 ```
-Note that although an alias/range variable must be declared for the dervied table (otherwise SQL will throw an
+Note that although an alias/range variable must be declared for the derived table (otherwise SQL will throw an
 error), it never makes sense to actually use it in the query.
 
 ## Selecting with more than 1 condition
@@ -477,11 +529,12 @@ This will return:
 These keywords can be combined to allow for more complex criteria combinations:
 ```sql
 SELECT name
-FROM persons
-WHERE (gender = 'M' AND age < 20)
-OR (gender = 'F' AND age > 20);
+   FROM persons
+      WHERE (gender = 'M' AND age < 20)
+      OR (gender = 'F' AND age > 20);
 ```
 This will return:
+
 | Name |
 |------|
 | Sam  |
@@ -512,7 +565,7 @@ SELECT * FROM TableName WITH UR;
 ```
 where UR stands for "uncommitted read".
 
-If used on table that has record modiﬁcations going on might have unpredictable results.
+If used on table that has record modifications going on might have unpredictable results.
 
 ## Selecting with Aggregate functions
 ### Average
@@ -549,11 +602,11 @@ The `COUNT()` aggregate function will return the count of values selected.
 ```sql
 SELECT COUNT(*) FROM Employees
 ```
-It can also be combined with where conditions to get the count of rows that satisfy speciﬁc conditions.
+It can also be combined with where conditions to get the count of rows that satisfy specific conditions.
 ```sql
 SELECT COUNT(*) FROM Employees WHERE ManagerId IS NOT NULL
 ```
-Speciﬁc columns can also be speciﬁed to get the number of values in the column. Note that `NULL` values are not
+Specific columns can also be specified to get the number of values in the column. Note that `NULL` values are not
 counted.
 ```sql
 SELECT COUNT(ManagerId) FROM Employees
@@ -579,7 +632,7 @@ SELECT * FROM Cars WHERE ( status = 'Waiting' OR status = 'Working' )
 i.e. value `IN ( <value list> )` is a **shorthand for disjunction (logical OR)**.
 
 ## Get aggregated result for row groups
-Counting rows based on a speciﬁc column value:
+Counting rows based on a specific column value:
 ```sql
 SELECT category, COUNT(*) AS item_count
 FROM item
@@ -591,16 +644,16 @@ SELECT department, AVG(income)
 FROM employees
 GROUP BY department;
 ```
-The important thing is to select only columns speciﬁed in the `GROUP BY` clause or used with aggregate functions.
+The important thing is to select only columns specified in the `GROUP BY` clause or used with aggregate functions.
 
-There `WHERE` clause can also be used with `GROUP BY`, but `WHERE` ﬁlters out records before any grouping is done:
+There `WHERE` clause can also be used with `GROUP BY`, but `WHERE` filters out records before any grouping is done:
 ```sql
 SELECT department, AVG(income)
 FROM employees
 WHERE department <> 'ACCOUNTING'
 GROUP BY department;
 ```
-If you need to **ﬁlter the results after the grouping has been done**, e.g, to see only departments whose average
+If you need to **filter the results after the grouping has been done**, e.g, to see only departments whose average
 income is larger than 1000, **you need to use the `HAVING` clause**:
 ```sql
 SELECT department, AVG(income)
@@ -633,8 +686,8 @@ One may also specify multiple sorting columns. For example:
 ```sql
 SELECT * FROM Employees ORDER BY LName ASC, FName ASC
 ```
-This example will sort the results ﬁrst by LName and then, for records that have the same LName, sort by FName. This<br/>
-will give you a result similar to what you would ﬁnd in a telephone book.<br/>
+This example will sort the results first by LName and then, for records that have the same LName, sort by FName. This<br/>
+will give you a result similar to what you would find in a telephone book.<br/>
 In order to save retyping the column name in the ORDER BY clause, it is possible to use instead the column's<br/>
 number. Note that column numbers start from 1.<br/>
 ```sql
@@ -651,7 +704,7 @@ This will sort your results to have all records with the LName of "Jones" at the
 ```sql
 SELECT Name FROM Customers WHERE PhoneNumber IS NULL
 ```
-Selection with nulls take a diﬀerent syntax. Don't use =, use IS NULL or IS NOT NULL instead.
+Selection with nulls take a different syntax. Don't use =, use IS NULL or IS NOT NULL instead.
 
 ## Select distinct (unique values only)
 ```sql
@@ -687,7 +740,7 @@ This is called cross product in SQL it is same as cross product in sets
 
 These statements return the selected columns from multiple tables in one query.
 
-There is no speciﬁc relationship between the columns returned from each table.
+There is no specific relationship between the columns returned from each table.
 
 Sources:
 * [SQL Notes for Professionals](https://goalkicker.com/SQLBook)

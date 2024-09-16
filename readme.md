@@ -204,3 +204,4 @@ window when query is ran again.
 * [Data Types](./data_types.md)
 * [null](./null.md)
 * [Some SQL Queries](./example_databases_and_tables.md)
+* [SELECT](./select.md)
