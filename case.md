@@ -1,10 +1,11 @@
 # CASE
 The CASE expression is used to implement if-then logic.
+
 ## Use CASE to COUNT the number of rows in a column match a condition
 **Use Case**
 
-CASE can be used in conjunction with SUM to return a count of only those items matching a pre-deﬁned condition.
-(This is similar to COUNTIF in Excel.)
+CASE can be used in conjunction with SUM to return a count of only those items matching a pre-defined condition.
+(This is similar to `COUNTIF` in Excel.)
 
 The trick is to return binary results indicating matches, so the "1"s returned for matching entries can be summed
 for a count of the total number of matches.

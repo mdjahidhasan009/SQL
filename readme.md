@@ -205,3 +205,4 @@ window when query is ran again.
 * [null](./null.md)
 * [Some SQL Queries](./example_databases_and_tables.md)
 * [SELECT](./select.md)
+* [ORDER BY](./order_by.md)
