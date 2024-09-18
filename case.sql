@@ -48,7 +48,10 @@ END , CITY;
 
 -- delete all data of DEPT table to insert some row with `NULL` for future use
 TRUNCATE TABLE DEPT;
-SELECT * FROM DEPT;
+SELECT 
+    *
+FROM
+    DEPT;
 
 -- Insert data into DEPT table
 INSERT INTO DEPT (ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER) VALUES
@@ -70,3 +73,33 @@ ORDER BY CASE
     WHEN REGION IS NULL THEN 1
     ELSE 0
 END , REGION;
+
+
+
+-- Create the table
+CREATE TABLE DateComparison (
+    Id INT PRIMARY KEY,
+    Date1 DATE,
+    Date2 DATE
+);
+
+-- Insert the data
+INSERT INTO DateComparison (Id, Date1, Date2) VALUES
+(1, '2017-01-01', '2017-01-31'),
+(2, '2017-01-31', '2017-01-03'),
+(3, '2017-01-31', '2017-01-02'),
+(4, '2017-01-06', '2017-01-31'),
+(5, '2017-01-31', '2017-01-05'),
+(6, '2017-01-04', '2017-01-31');
+
+
+SELECT 
+    Id, Date1, Date2
+FROM
+    DateComparison
+ORDER BY CASE
+    WHEN COALESCE(Date1, '1753-01-01') < COALESCE(Date2, '1753-01-01') THEN Date1
+    ELSE Date2
+END;
+
+

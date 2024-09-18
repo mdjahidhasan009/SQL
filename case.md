@@ -313,6 +313,8 @@ INSERT INTO DEPT (ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER) VALUES
 ```
 </details>
 
+In this query will first sort the records by the REGION column. If the REGION column is NULL, the records will be
+sorted last. If the REGION column is not NULL, the records will be sorted first.
 ```sql
 SELECT 
     ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER
@@ -335,13 +337,35 @@ END , REGION;
 | 4   | NULL         | Chicago       | INNOVATION      | 11               |
 | 2   | NULL         | Detroit       | HUMAN RESOURCES | 9                |
 
-## CASE in ORDER BY clause to sort records by lowest value of 2 columns
+## `CASE` in `ORDER BY` clause to sort records by lowest value of 2 columns
 Imagine that you need sort records by lowest value of either one of two columns. Some databases could use a non-
-aggregated MIN() or LEAST() function for this (... ORDER BY MIN(Date1, Date2)), but in standard SQL, you have
-to use a CASE expression.
+aggregated `MIN()` or `LEAST()` function for this (`... ORDER BY MIN(Date1, Date2)`), but in standard SQL, you have
+to use a `CASE` expression.
 
-The CASE expression in the query below looks at the Date1 and Date2 columns, checks which column has the lower
+The `CASE` expression in the query below looks at the `Date1` and `Date2` columns, checks which column has the lower
 value, and sorts the records depending on this value.
+
+<details>
+<summary>Create and insert data into DateComparison</summary>
+
+```sql
+-- Create the table
+CREATE TABLE DateComparison (
+    Id INT PRIMARY KEY,
+    Date1 DATE,
+    Date2 DATE
+);
+
+-- Insert the data
+INSERT INTO DateComparison (Id, Date1, Date2) VALUES
+(1, '2017-01-01', '2017-01-31'),
+(2, '2017-01-31', '2017-01-03'),
+(3, '2017-01-31', '2017-01-02'),
+(4, '2017-01-06', '2017-01-31'),
+(5, '2017-01-31', '2017-01-05'),
+(6, '2017-01-04', '2017-01-31');
+```
+</details>
 
 **Sample data**
 
@@ -354,10 +378,12 @@ value, and sorts the records depending on this value.
 | 5   | 2017-01-31 | 2017-01-05 |
 | 6   | 2017-01-04 | 2017-01-31 |
 
+`COALESCE` is used to handle `NULL` values. If `Date1` is `NULL`, it is replaced with `'1753-01-01'`, and if `Date2` is
+`NULL`, it is replaced with `'1753-01-01'`. This way, the `CASE` expression can compare the two dates correctly. 
 **Query**
 ```sql
 SELECT Id, Date1, Date2
-FROM YourTable
+FROM DateComparison
 ORDER BY CASE
     WHEN COALESCE(Date1, '1753-01-01') < COALESCE(Date2, '1753-01-01') THEN Date1
     ELSE Date2
@@ -375,8 +401,8 @@ END
 | 4  | **2017-01-06**   | 2017-01-31      |
 
 **Explanation**
-As you see row with Id = 1 is ﬁrst, that because Date1 have lowest record from entire table 2017-01-01, row where
-Id = 3 is second that because Date2 equals to 2017-01-02 that is second lowest value from table and so on.
+As you see row with Id = 1 is first, that because Date1 have the lowest record from entire table 2017-01-01, row where
+Id = 3 is second that because Date2 equals to 2017-01-02 that is second-lowest value from table and so on.
 
 So we have sorted records from 2017-01-01 to 2017-01-06 ascending and no care on which one column Date1 or
 Date2 are those values. 
