@@ -206,3 +206,4 @@ window when query is ran again.
 * [Some SQL Queries](./example_databases_and_tables.md)
 * [SELECT](./select.md)
 * [ORDER BY](./order_by.md)
+* [AND OR Operators](./and_or_operators.md)
