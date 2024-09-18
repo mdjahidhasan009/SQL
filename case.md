@@ -1,10 +1,18 @@
 # CASE
-The CASE expression is used to implement if-then logic.
+The `CASE` expression is used to implement if-else logic.
 
 ## Use CASE to COUNT the number of rows in a column match a condition
-**Use Case**
+```sql
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ...
+    ELSE default_result
+END
+```
+### Use Case
 
-CASE can be used in conjunction with SUM to return a count of only those items matching a pre-defined condition.
+`CASE` can be used in conjunction with `SUM` to return a count of only those items matching a pre-defined condition.
 (This is similar to `COUNTIF` in Excel.)
 
 The trick is to return binary results indicating matches, so the "1"s returned for matching entries can be summed
@@ -21,11 +29,32 @@ Given this table ItemSales, let's say you want to learn the total number of item
 | 4   | 100    | 34.5  | EXPENSIVE   | 
 | 5   | 145    | 10    | AFFORDABLE  | 
 
+<details>
+<summary>Create and insert at table ItemSales</summary>
+
+```sql
+CREATE TABLE ItemSales (
+    Id INT,
+    ItemId INT,
+    Price FLOAT,
+    PriceRating VARCHAR(30)
+);
+
+-- Insert the data
+INSERT INTO ItemSales (Id, ItemId, Price, PriceRating) VALUES
+(1, 100, 34.5, 'EXPENSIVE'),
+(2, 145, 2.3, 'CHEAP'),
+(3, 100, 34.5, 'EXPENSIVE'),
+(4, 100, 34.5, 'EXPENSIVE'),
+(5, 145, 10, 'AFFORDABLE');
+```
+</details>
+
 **Query**
 ```sql
 SELECT 
     COUNT(Id) AS ItemCount,
-    SUM ( CASE 
+    SUM( CASE 
             WHEN PriceRating = 'Expensive' THEN 1
             ELSE 0
           END
@@ -42,7 +71,7 @@ Alternative:
 ```sql
 SELECT
     COUNT(Id) as ItemsCount,
-    SUM (
+    SUM(
         CASE PriceRating
             WHEN 'Expensive' THEN 1
             ELSE 0
@@ -54,7 +83,7 @@ FROM ItemSales;
 ## Searched CASE in SELECT (Matches a boolean expression)
 The searched CASE returns results when a boolean expression is TRUE.
 
-(This diﬀers from the simple case, which can only check for equivalency with an input.)
+(This differs from the simple case, which can only check for equivalency with an input.)
 ```sql
 SELECT Id, ItemId, Price,
     CASE WHEN Price < 10 THEN 'CHEAP'
@@ -72,19 +101,44 @@ FROM ItemSales;
 | 4  | 100    | 34.5  | EXPENSIVE   |
 | 5  | 145    | 10    | AFFORDABLE  |
 
-    ## CASE in a clause ORDER BY
-We can use 1,2,3.. to determine the type of order:
+## CASE in a clause ORDER BY
+We can use `1,2,3..` to determine the type of order:
+<details>
+<summary>Create and insert at table DEPT</summary>
+
 ```sql
-SELECT * FROM DEPT 
-    ORDER BY 
-    CASE DEPARTMENT 
-        WHEN 'MARKTING' THEN 1
-        WHEN 'SALES' THEN 2
-        WHEN 'RESEARCH' THEN 3
-        WHEN 'INNOVATION' THEN 4
-        ELSE 5
-    END
-    CITY    
+CREATE TABLE DEPT (
+    ID INT,
+    REGION VARCHAR(50),
+    CITY VARCHAR(50),
+    DEPARTMENT VARCHAR(50),
+    EMPLOYEES_NUMBER INT
+);
+
+INSERT INTO DEPT (ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER) VALUES
+(12, 'New England', 'Boston', 'MARKETING', 9),
+(15, 'West', 'San Francisco', 'MARKETING', 12),
+(9, 'Midwest', 'Chicago', 'SALES', 8),
+(14, 'Mid-Atlantic', 'New York', 'SALES', 12),
+(5, 'West', 'Los Angeles', 'RESEARCH', 11),
+(10, 'Mid-Atlantic', 'Philadelphia', 'RESEARCH', 13),
+(4, 'Midwest', 'Chicago', 'INNOVATION', 11),
+(2, 'Midwest', 'Detroit', 'HUMAN RESOURCES', 9);
+```
+</details>
+
+```sql
+SELECT 
+    *
+FROM
+    DEPT
+ORDER BY CASE DEPARTMENT
+    WHEN 'MARKETING' THEN 1
+    WHEN 'SALES' THEN 2
+    WHEN 'RESEARCH' THEN 3
+    WHEN 'INNOVATION' THEN 4
+    ELSE 5
+END , CITY;
 ```
 
 | ID  | REGION       | CITY          | DEPARTMENT      | EMPLOYEES_NUMBER |
@@ -98,20 +152,72 @@ SELECT * FROM DEPT
 | 4   | Midwest      | Chicago       | INNOVATION      | 11               |
 | 2   | Midwest      | Detroit       | HUMAN RESOURCES | 9                |
 
+```sql
+SELECT 
+    *
+FROM
+    DEPT
+ORDER BY CASE DEPARTMENT
+    WHEN 'MARKETING' THEN 0
+    WHEN 'SALES' THEN 1
+    WHEN 'RESEARCH' THEN 3
+    WHEN 'INNOVATION' THEN 2
+    ELSE 5
+END , CITY;
++------+--------------+---------------+-----------------+------------------+
+| ID   | REGION       | CITY          | DEPARTMENT      | EMPLOYEES_NUMBER |
++------+--------------+---------------+-----------------+------------------+
+|   12 | New England  | Boston        | MARKETING       |                9 |
+|   15 | NULL         | San Francisco | MARKETING       |               12 |
+|    9 | Midwest      | Chicago       | SALES           |                8 |
+|   14 | Mid-Atlantic | New York      | SALES           |               12 |
+|    4 | NULL         | Chicago       | INNOVATION      |               11 |
+|    5 | West         | Los Angeles   | RESEARCH        |               11 |
+|   10 | Mid-Atlantic | Philadelphia  | RESEARCH        |               13 |
+|    2 | NULL         | Detroit       | HUMAN RESOURCES |                9 |
++------+--------------+---------------+-----------------+------------------+
+8 rows in set (0.00 sec)
+```
+
 ## Shorthand CASE in SELECT
-CASE's shorthand variant evaluates an expression (usually a column) against a series of values. This variant is a bit
-shorter, and saves repeating the evaluated expression over and over again. The ELSE clause can still be used,
+```sql
+CASE expression
+    WHEN value1 THEN result1
+    WHEN value2 THEN result2
+    ...
+    ELSE default_result
+END
+```
+
+`CASE`'s shorthand variant evaluates an expression (usually a column) against a series of values. This variant is a bit
+shorter, and saves repeating the evaluated expression over and over again. The `ELSE` clause can still be used,
 though:
 ```sql
-SELECT Id, ItemId, Price,
-    CASE Price WHEN 5 THEN 'CHEAP'
-        WHEN 15 THEN       'AFFORDABLE'
-        ELSE               'EXPENSIVE'
-    END as PriceRating
-FROM ItemSales
+SELECT 
+    Id,
+    ItemId,
+    Price,
+    CASE Price
+        WHEN 5 THEN 'CHEAP'
+        WHEN 15 THEN 'AFFORDABLE'
+        ELSE 'EXPENSIVE'
+    END AS PriceRating
+FROM
+    ItemSales;
++------+--------+-------+-------------+
+| Id   | ItemId | Price | PriceRating |
++------+--------+-------+-------------+
+|    1 |    100 |  34.5 | EXPENSIVE   |
+|    2 |    145 |   2.3 | EXPENSIVE   |
+|    3 |    100 |  34.5 | EXPENSIVE   |
+|    4 |    100 |  34.5 | EXPENSIVE   |
+|    5 |    145 |    10 | EXPENSIVE   |
++------+--------+-------+-------------+
+5 rows in set (0.00 sec)
 ```
 A word of caution. It's important to realize that when using the short variant the entire statement is evaluated at
-each WHEN. Therefore the following statement:
+each WHEN. Therefore, the following statement:
+**SQL Server**
 ```sql
 SELECT
     CASE ABS(CHECKSUM(NEWID())) % 4
@@ -121,8 +227,20 @@ SELECT
         WHEN 3 THEN 'Mrs'
 END
 ```
-may produce a NULL result. That is because at each WHEN NEWID() is being called again with a new result. Equivalent
+
+**MySQL**
+```sql
+SELECT
+    CASE FLOOR(RAND() * 4)
+        WHEN 0 THEN 'Dr'
+        WHEN 1 THEN 'Master'
+        WHEN 2 THEN 'Mr'
+        WHEN 3 THEN 'Mrs'
+    END AS Title;
+```
+may produce a `NULL` result. That is because at each WHEN `NEWID()` is being called again with a new result. Equivalent
 to:
+**SQL Server**
 ```sql
 SELECT
     CASE
@@ -132,7 +250,23 @@ SELECT
         WHEN ABS(CHECKSUM(NEWID())) % 4 = 3 THEN 'Mrs'
 END
 ```
-Therefore it can miss all the WHEN cases and result as NULL.
+**MySQL**
+```sql
+SELECT
+    CASE
+        WHEN FLOOR(RAND() * 4) = 0 THEN 'Dr'
+        WHEN FLOOR(RAND() * 4) = 1 THEN 'Master'
+        WHEN FLOOR(RAND() * 4) = 2 THEN 'Mr'
+        WHEN FLOOR(RAND() * 4) = 3 THEN 'Mrs'
+    END AS Title;
++-------+
+| Title |
++-------+
+| Dr    |
++-------+
+1 row in set (0.00 sec)
+```
+Therefore, it can miss all the WHEN cases and result as NULL.
 
 ## Using CASE in UPDATE
 sample on price increases:
@@ -148,20 +282,46 @@ END
 ```
 
 ## CASE use for NULL values ordered last
-in this way '0' representing the known values are ranked ﬁrst, '1' representing the NULL values are sorted by the
+in this way '0' representing the known values are ranked first, '1' representing the NULL values are sorted by the
 last:
+<details>
+<summary>Create DEPT table and insert data</summary>
+
 ```sql
-SELECT ID
-    ,REGION
-    ,CITY
-    ,DEPARTMENT
-    ,EMPLOYEES_NUMBER
-FROM DEPT
-ORDER BY
-    CASE WHEN REGION IS NULL THEN 1
+-- Use your database
+USE your_database_name;
+
+-- Create the DEPT table
+CREATE TABLE DEPT (
+    ID INT,
+    REGION VARCHAR(50),
+    CITY VARCHAR(50),
+    DEPARTMENT VARCHAR(50),
+    EMPLOYEES_NUMBER INT
+);
+
+-- Insert data into DEPT table
+INSERT INTO DEPT (ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER) VALUES
+(10, 'Mid-Atlantic', 'Philadelphia', 'RESEARCH', 13),
+(14, 'Mid-Atlantic', 'New York', 'SALES', 12),
+(9, 'Midwest', 'Chicago', 'SALES', 8),
+(12, 'New England', 'Boston', 'MARKETING', 9),
+(5, 'West', 'Los Angeles', 'RESEARCH', 11),
+(15, NULL, 'San Francisco', 'MARKETING', 12),
+(4, NULL, 'Chicago', 'INNOVATION', 11),
+(2, NULL, 'Detroit', 'HUMAN RESOURCES', 9);
+```
+</details>
+
+```sql
+SELECT 
+    ID, REGION, CITY, DEPARTMENT, EMPLOYEES_NUMBER
+FROM
+    DEPT
+ORDER BY CASE
+    WHEN REGION IS NULL THEN 1
     ELSE 0
-END,
-REGION
+END , REGION;
 ```
 
 | ID  | REGION       | CITY          | DEPARTMENT      | EMPLOYEES_NUMBER |

@@ -207,3 +207,9 @@ window when query is ran again.
 * [SELECT](./select.md)
 * [ORDER BY](./order_by.md)
 * [AND OR Operators](./and_or_operators.md)
+* [CASE](./case.md)
+
+
+
+
+* [SQL Execution Order](./sql_execution_order.md)
