@@ -579,7 +579,7 @@ SELECT AVG(Salary) FROM Employees where DepartmentId = 1
 ```
 Aggregate functions can also be combined with group by clause.
 
-If employee is categorized with multiple department, and we want to find avg salary for every department then we
+If employee is categorized with multiple department and we want to ﬁnd avg salary for every department then we
 can use following query.
 ```sql
 SELECT AVG(Salary) FROM Employees GROUP BY DepartmentId
@@ -635,31 +635,31 @@ i.e. value `IN ( <value list> )` is a **shorthand for disjunction (logical OR)**
 Counting rows based on a specific column value:
 ```sql
 SELECT category, COUNT(*) AS item_count
-   FROM item
-   GROUP BY category;
+FROM item
+GROUP BY category;
 ```
 Getting average income by department:
 ```sql
 SELECT department, AVG(income)
-   FROM employees
-   GROUP BY department;
+FROM employees
+GROUP BY department;
 ```
 The important thing is to select only columns specified in the `GROUP BY` clause or used with aggregate functions.
 
 There `WHERE` clause can also be used with `GROUP BY`, but `WHERE` filters out records before any grouping is done:
 ```sql
 SELECT department, AVG(income)
-   FROM employees
-   WHERE department <> 'ACCOUNTING'
-   GROUP BY department;
+FROM employees
+WHERE department <> 'ACCOUNTING'
+GROUP BY department;
 ```
 If you need to **filter the results after the grouping has been done**, e.g, to see only departments whose average
 income is larger than 1000, **you need to use the `HAVING` clause**:
 ```sql
 SELECT department, AVG(income)
-   FROM employees
-   WHERE department <> 'ACCOUNTING'
-   GROUP BY department
+FROM employees
+WHERE department <> 'ACCOUNTING'
+GROUP BY department
 HAVING avg(income) > 1000;
 ```
 ```sql
@@ -667,11 +667,11 @@ SELECT * FROM Employees ORDER BY LName
 ```
 This statement will return all the columns from the table Employees.
 
-| Id  | FName   | LName    | PhoneNumber |
-|-----|---------|----------|-------------| 
-| 2   | John    | Johnson  |  2468101214 | 
-| 1   | James   | Smith    | 1234567890  |
-| 3   | Michael | Williams | 1357911131  | 
+| Id | FName  | LName    | PhoneNumber |
+|----|--------|----------|-------------| 
+| 2 | John    | Johnson  |  2468101214 | 
+| 1 | James   | Smith    | 1234567890  |
+| 3 | Michael | Williams | 1357911131  | 
 
 ```sql
 SELECT * FROM Employees ORDER BY LName DESC
