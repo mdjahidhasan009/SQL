@@ -209,6 +209,7 @@ window when query is ran again.
 * [ORDER BY](./order_by.md)
 * [AND OR Operators](./and_or_operators.md)
 * [CASE](./case.md)
+* [LIKE](./like.md)
 
 
 
