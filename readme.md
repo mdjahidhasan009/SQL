@@ -210,6 +210,7 @@ window when query is ran again.
 * [AND OR Operators](./and_or_operators.md)
 * [CASE](./case.md)
 * [LIKE](./like.md)
+* [IN clause](./in_clause.md)
 
 
 
