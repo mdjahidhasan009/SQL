@@ -211,6 +211,7 @@ window when query is ran again.
 * [CASE](./case.md)
 * [LIKE](./like.md)
 * [IN clause](./in_clause.md)
+* [Filter using WHERE and HAVING](./filter_using_WHERE_and_HAVING.md)
 
 
 

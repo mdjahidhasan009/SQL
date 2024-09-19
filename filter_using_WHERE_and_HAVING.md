@@ -1,6 +1,8 @@
 ## Use BETWEEN to Filter Results
+> Note: The BETWEEN operator is inclusive means that the values you specify in the query will be included in the
+> results if the value is greater than or equal to the lower value and less than or equal to the higher value.
+
 The following examples use the Item Sales and Customers sample databases.
-> Note: The BETWEEN operator is inclusive.
 
 Using the BETWEEN operator with Numbers:
 ```sql
@@ -19,10 +21,10 @@ to 17. The results will look like:
 ## Using the BETWEEN operator with Date Values
 ```sql
 SELECT * From ItemSales
-WHERE SaleDate BETWEEN '2013-07-11' AND '2013-05-24'
+WHERE SaleDate BETWEEN '2013-05-24' AND '2013-07-11';
 ```
-This query will return all ItemSales records with a SaleDate that is greater than or equal to July 11, 2013 and less
-than or equal to May 24, 2013.
+This query will return all ItemSales records with a SaleDate that is greater than or equal to May 24, 2013 and less
+than or equal to July 11, 2013.
 
 | Id   | SaleDate   | ItemId | Quantity | Price |
 |------|------------|--------|----------|-------|

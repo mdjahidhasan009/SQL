@@ -32,10 +32,10 @@ CREATE TABLE Orders (
     OrderId INT PRIMARY KEY,
     CustomerId INT NOT NULL,
     OrderDate DATE NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (CustomerId) REFERENCES Customers(Id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+    TotalAmount DECIMAL(10 , 2 ) NOT NULL,
+    FOREIGN KEY (CustomerId)
+        REFERENCES Customers (Id)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO Orders (OrderId, CustomerId, OrderDate, TotalAmount) VALUES
@@ -71,17 +71,23 @@ FROM
 WHERE
     Id = 1 OR Id = 8 OR Id = 3;
     
-SELECT *
-FROM Customers
-WHERE Id IN (   
-    SELECT DISTINCT customer_id
-    FROM orders
-);    
+SELECT 
+    *
+FROM
+    Customers
+WHERE
+    Id IN (SELECT DISTINCT
+            customer_id
+        FROM
+            orders);
 
 
-SELECT *
-FROM Customers
-WHERE Id IN (   
-    SELECT DISTINCT CustomerId
-    FROM Orders
-);
+SELECT 
+    *
+FROM
+    Customers
+WHERE
+    Id IN (SELECT DISTINCT
+            CustomerId
+        FROM
+            Orders);
