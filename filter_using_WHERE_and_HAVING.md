@@ -1,4 +1,4 @@
-## Use BETWEEN to Filter Results
+# BETWEEN to Filter Results
 > Note: The BETWEEN operator is inclusive means that the values you specify in the query will be included in the
 > results if the value is greater than or equal to the lower value and less than or equal to the higher value.
 
@@ -12,11 +12,20 @@ WHERE Quantity BETWEEN 10 AND 17
 This query will return all ItemSales records that have a quantity that is greater or equal to 10 and less than or equal
 to 17. The results will look like:
 
-| Id  | SaleDate   | ItemId | Quantity | Price |
-|-----|------------|--------|----------|-------|
-| 1   | 2013-07-01 | 100    | 10       | 34.5  |
-| 4   | 2013-07-23 | 100    | 15       | 34.5  | 
-| 5   | 2013-07-24 | 145    | 10       | 34.5  | 
+```sql
+mysql> SELECT * FROM ItemSales;
++----+------------+--------+----------+-------+
+| Id | SaleDate   | ItemId | Quantity | Price |
++----+------------+--------+----------+-------+
+|  1 | 2013-07-11 |    100 |       20 | 34.50 |
+|  3 | 2013-07-11 |    100 |       20 | 34.50 |
+|  4 | 2013-07-23 |    100 |       15 | 34.50 |
+|  5 | 2013-07-24 |    145 |       10 | 34.50 |
+|  6 | 2013-05-24 |    100 |       20 | 34.50 |
+|  7 | 2013-05-23 |    100 |       20 | 34.50 |
++----+------------+--------+----------+-------+
+6 rows in set (0.00 sec)
+```
 
 ## Using the BETWEEN operator with Date Values
 ```sql
@@ -26,32 +35,303 @@ WHERE SaleDate BETWEEN '2013-05-24' AND '2013-07-11';
 This query will return all ItemSales records with a SaleDate that is greater than or equal to May 24, 2013 and less
 than or equal to July 11, 2013.
 
-| Id   | SaleDate   | ItemId | Quantity | Price |
-|------|------------|--------|----------|-------|
-| 3    | 2013-07-11 | 100    | 20       | 34.5  |
-| 4    | 2013-07-23 | 100    | 15       | 34.5  |
-| 5    | 2013-07-24 | 145    | 10       | 34.5  |
-
-> When comparing datetime values instead of dates, you may need to convert the datetime values into a
-date values, or add or subtract 24 hours to get the correct results.
-
-Using the BETWEEN operator with Text Values:
 ```sql
-SELECT Id, FName, LName FROM Customers
+mysql> SELECT * From ItemSales WHERE SaleDate BETWEEN '2013-05-24' AND '2013-07-11';
++----+------------+--------+----------+-------+
+| Id | SaleDate   | ItemId | Quantity | Price |
++----+------------+--------+----------+-------+
+|  1 | 2013-07-11 |    100 |       20 | 34.50 |
+|  3 | 2013-07-11 |    100 |       20 | 34.50 |
+|  6 | 2013-05-24 |    100 |       20 | 34.50 |
++----+------------+--------+----------+-------+
+3 rows in set (0.00 sec)
+```
+
+
+## Understanding DATE vs. DATETIME in MySQL
+
+### DATE vs. DATETIME
+- **DATE**: Stores only the date in the format `YYYY-MM-DD`.
+- **DATETIME**: Stores both date and time in the format `YYYY-MM-DD HH:MM:SS`.
+
+### Why the Difference Matters
+When you compare `DATETIME` values, the time portion can affect the outcome. For instance, two records with the same 
+date but different times will be considered different when compared as `DATETIME`. If your intention is to compare only
+the dates, you need to handle the `DATETIME` values accordingly.
+
+### Method 1: Converting DATETIME to DATE
+One common approach is to extract the `DATE` part from the `DATETIME` values before performing the comparison. You can
+use the `DATE()` function for this purpose.
+
+#### Example Scenario
+**Table:** `events`
+
+| id | event_name | event_datetime        |
+|----|------------|-----------------------|
+| 1  | Conference | 2024-04-15 09:00:00   |
+| 2  | Meeting    | 2024-04-15 15:30:00   |
+| 3  | Webinar    | 2024-04-16 11:00:00   |
+
+**Goal:** Retrieve all events that occurred on `2024-04-15`, regardless of the time.
+
+### SQL Query Using `DATE()`
+
+```sql
+SELECT *
+FROM events
+WHERE DATE(event_datetime) = '2024-04-15';
+```
+
+**Result:**
+
+| id | event_name | event_datetime      |
+|----|------------|---------------------|
+| 1  | Conference | 2024-04-15 09:00:00 |
+| 2  | Meeting    | 2024-04-15 15:30:00 |
+
+#### Explanation
+- The `DATE(event_datetime)` function extracts the date part from the `DATETIME` field.
+- The `WHERE` clause compares only the date portion, ignoring the time.
+
+### Method 2: Adding or Subtracting 24 Hours
+In some scenarios, especially when dealing with ranges or boundaries, you might need to adjust the `DATETIME` values by
+adding or subtracting 24 hours (1 day) to ensure accurate comparisons.
+
+#### Example Scenario
+**Table:** `subscriptions`
+
+| id | user_id | start_datetime       | end_datetime         |
+|----|---------|----------------------|----------------------|
+| 1  | 101     | 2024-04-01 10:00:00  | 2024-04-10 10:00:00  |
+| 2  | 102     | 2024-04-05 08:30:00  | 2024-04-15 08:30:00  |
+| 3  | 103     | 2024-04-10 12:00:00  | 2024-04-20 12:00:00  |
+
+**Goal:** Find all subscriptions active on `2024-04-15`. A subscription is active if the date falls between `start_datetime` and `end_datetime`. To include subscriptions that end exactly on `2024-04-15`, you might need to add 24 hours to the end date.
+
+### SQL Query Without Adjusting
+
+```sql
+SELECT *
+FROM subscriptions
+WHERE '2024-04-15' BETWEEN DATE(start_datetime) AND DATE(end_datetime);
+```
+
+**Result:**
+
+| id | user_id | start_datetime      | end_datetime        |
+|----|---------|---------------------|---------------------|
+| 2  | 102     | 2024-04-05 08:30:00 | 2024-04-15 08:30:00 |
+
+**Issue:** The subscription with `id=3` ends on `2024-04-20`, so it's not included, but suppose you want to include 
+subscriptions that are active up to the end of `2024-04-15`.
+
+### Adjusting `end_datetime` by Adding 24 Hours
+
+```sql
+SELECT *
+FROM subscriptions
+WHERE '2024-04-15' BETWEEN DATE(start_datetime) AND DATE(end_datetime + INTERVAL 1 DAY);
+```
+
+**Result:**
+
+| id | user_id | start_datetime      | end_datetime        |
+|----|---------|---------------------|---------------------|
+| 2  | 102     | 2024-04-05 08:30:00 | 2024-04-15 08:30:00 |
+| 3  | 103     | 2024-04-10 12:00:00 | 2024-04-20 12:00:00 |
+
+**Explanation:**
+- Adding `INTERVAL 1 DAY` to `end_datetime` ensures that the end date is inclusive up to the entire day.
+- Now, if a subscription ends on `2024-04-15 08:30:00`, adding 24 hours makes the comparison inclusive for the whole day.
+
+
+## Alternative: Using < Operator with Next Day
+Another way to include the entire day without adjusting the `end_datetime` is to compare using the `<` operator with the
+next day.
+
+```sql
+SELECT *
+FROM subscriptions
+WHERE start_datetime <= '2024-04-15 23:59:59'
+  AND end_datetime >= '2024-04-15 00:00:00';
+```
+
+Or more elegantly:
+
+```sql
+SELECT *
+FROM subscriptions
+WHERE '2024-04-15' >= DATE(start_datetime)
+  AND '2024-04-15' < DATE(end_datetime) + INTERVAL 1 DAY;
+```
+
+## When to Use Each Method
+- **Converting to DATE**: Use when you need to compare only the date portions and ignore the time. It's straightforward
+  and efficient for date-based comparisons.
+
+- **Adding/Subtracting 24 Hours**: Use when dealing with date ranges where inclusivity of the end date is crucial, 
+  especially when the DATETIME includes specific times that might exclude records unintentionally.
+
+## Practical Example with a Sample Table
+Let's create a sample table to demonstrate both methods.
+
+### Creating the Table
+
+```sql
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    order_date DATETIME
+);
+```
+
+### Inserting Sample Data
+
+```sql
+INSERT INTO orders (order_id, order_date) VALUES
+(1, '2024-09-20 14:30:00'),
+(2, '2024-09-21 09:15:00'),
+(3, '2024-09-21 23:45:00'),
+(4, '2024-09-22 00:05:00');
+```
+
+### Scenario 1: Retrieve Orders on `2024-09-21`
+**Using DATE() Function**
+
+```sql
+SELECT *
+FROM orders
+WHERE DATE(order_date) = '2024-09-21';
+```
+
+**Result:**
+
+| order_id | order_date           |
+|----------|----------------------|
+| 2        | 2024-09-21 09:15:00  |
+| 3        | 2024-09-21 23:45:00  |
+
+### Scenario 2: Retrieve Orders Up to `2024-09-21` Inclusive
+**Using DATE() and Adding 1 Day to `end_date`**
+
+```sql
+SELECT *
+FROM orders
+WHERE order_date < DATE('2024-09-21') + INTERVAL 1 DAY;
+```
+
+**Result:**
+
+| order_id | order_date           |
+|----------|----------------------|
+| 1        | 2024-09-20 14:30:00  |
+| 2        | 2024-09-21 09:15:00  |
+| 3        | 2024-09-21 23:45:00  |
+
+**Explanation:**
+- `DATE('2024-09-21') + INTERVAL 1 DAY` results in `2024-09-22 00:00:00`.
+- The `<` operator ensures that all orders before `2024-09-22 00:00:00` are included, effectively including all orders on `2024-09-21` regardless of time.
+
+## Performance Considerations
+- **Using Functions on Columns**: Applying functions like `DATE()` directly on columns (e.g., `DATE(order_date)`) can
+  prevent MySQL from using indexes efficiently, potentially leading to slower queries on large datasets.
+
+- **Alternative Approach**: To maintain index usage, structure your `WHERE` clause to avoid wrapping columns in functions.
+
+**Example:**
+
+Instead of:
+
+```sql
+WHERE DATE(order_date) = '2024-09-21'
+```
+
+Use:
+
+```sql
+WHERE order_date >= '2024-09-21 00:00:00'
+  AND order_date < '2024-09-22 00:00:00'
+```
+
+**Benefits:**
+- Allows MySQL to utilize indexes on `order_date`.
+- Improves query performance, especially on large tables.
+
+### Summary
+- **Comparing DATETIME vs. DATE**: Direct comparisons of `DATETIME` include both date and time, which might not be 
+  desirable when only the date is relevant.
+- **Converting to DATE**: Use the `DATE()` function to extract the date part for accurate date-only comparisons.
+- **Adjusting by 24 Hours**: Add or subtract intervals to include entire days in range-based comparisons.
+
+
+
+
+## `BETWEEN` Operator with Letters in SQL
+
+#### SQL Query Example
+```sql
+SELECT Id, FName, LName 
+FROM Customers
 WHERE LName BETWEEN 'D' AND 'L';
 ```
-This query will return all customers whose name alphabetically falls between the letters 'D' and 'L'. In this case,
-Customer #1 and #3 will be returned. Customer #2, whose name begins with a 'M' will not be included.
 
-| Id | FName   | LName |
-|----|---------|-------|
-| 1  | William | Jones | 
-| 3  | Richard | Davis |
+### How It Works
+- The `BETWEEN 'D' AND 'L'` clause checks only the first letter of the `LName` values in the `Customers` table.
+- It performs a lexicographical (dictionary) comparison, checking if the first letter of `LName` falls within the range 
+  from 'D' to 'L', inclusive.
+
+## Behavior Explained
+- The `BETWEEN` operator filters records within a specified range based on the first letter.
+- The comparison is usually case-sensitive depending on the collation settings of your database, which means it treats 
+  uppercase and lowercase letters separately.
+
+### What This Query Matches
+- **Matches**: Any last name starting with 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', or 'L'.
+- **Examples of Matching Last Names**:
+    - `Doe`
+    - `Ellis`
+    - `Fisher`
+    - `Johnson`
+
+### What This Query Does Not Match
+- **Does Not Match**: Last names starting with letters outside the range 'D' to 'L'.
+- **Examples of Non-Matching Last Names**:
+    - `Baker` (starts with 'B')
+    - `Miller` (starts with 'M')
+    - `Nash` (starts with 'N')
+
+### Critical and Tough Examples
+
+### 1. Case Sensitivity Example
+If your database collation is case-sensitive, the query will differentiate between uppercase and lowercase. For instance:
+- `LName BETWEEN 'd' AND 'l'` will only match lowercase letters between 'd' and 'l', not 'D' to 'L'.
+
+### 2. Special Characters and Accents
+- If names have special characters or accents (e.g., `Álvarez`, `Öhman`), they might fall outside the expected range 
+  depending on collation.
+- Example: `LName BETWEEN 'Á' AND 'O'` might include accented letters like 'É' and 'Ö'.
+
+### 3. Including Numerical Values
+- If `LName` has numeric values or symbols (e.g., `123Smith`, `#Brown`), those might fall unexpectedly within or outside 
+  the range, based on ASCII values.
+- For example: `LName BETWEEN '1' AND '9'` will include names starting with numbers.
+
+### 4. Using the `BETWEEN` with Mixed-Case Collations
+- In collations where lowercase is treated after uppercase (e.g., binary collations), `BETWEEN 'D' AND 'l'` might 
+  exclude `Doe` but include `lee`.
+
+## Key Points to Remember
+- The `BETWEEN` operator can behave differently based on collation settings, especially with mixed cases, accented
+  characters, and non-alphabetical symbols.
+- It’s essential to understand your database’s collation to ensure the correct range filtering when using `BETWEEN` with
+  letters.
+
+### Conclusion
+Using `BETWEEN` with letter ranges is a powerful way to filter data alphabetically. However, it is crucial to be mindful of special cases, collation settings, and the inclusion of non-alphabetical characters that may affect the results.
 
 ## Use HAVING with Aggregate Functions
 Unlike the WHERE clause, HAVING can be used with aggregate functions.
 >An aggregate function is a function where the values of multiple rows are grouped together as input on
-certain criteria to form a single value of more signiﬁcant meaning or measurement
+certain criteria to form a single value of more significant meaning or measurement
 
 Common aggregate functions include `COUNT()`, `SUM()`, `MIN()`, and `MAX()`.
 
