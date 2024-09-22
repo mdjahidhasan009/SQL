@@ -328,20 +328,34 @@ If your database collation is case-sensitive, the query will differentiate betwe
 ### Conclusion
 Using `BETWEEN` with letter ranges is a powerful way to filter data alphabetically. However, it is crucial to be mindful of special cases, collation settings, and the inclusion of non-alphabetical characters that may affect the results.
 
+
+
+
+
 ## Use HAVING with Aggregate Functions
 Unlike the WHERE clause, HAVING can be used with aggregate functions.
->An aggregate function is a function where the values of multiple rows are grouped together as input on
-certain criteria to form a single value of more significant meaning or measurement
+> An aggregate function is a function where the values of multiple rows are grouped together as input on certain criteria
+> to form a single value of more significant meaning or measurement
 
 Common aggregate functions include `COUNT()`, `SUM()`, `MIN()`, and `MAX()`.
 
 This example uses the Car Table from the Example Databases.
+
+**MS SQL Server**
 ```sql
 SELECT CustomerId, COUNT(Id) AS [Number of Cars]
-FROM Cars 
+FROM Cars
 GROUP BY CustomerId
 HAVING COUNT(Id) > 1;
 ```
+**MySQL**
+```sql
+SELECT CustomerId, COUNT(Id) AS `Number of Cars`
+FROM Cars
+GROUP BY CustomerId
+HAVING COUNT(Id) > 1;
+```
+
 This query will return the CustomerId and Number of Cars count of any customer who has more than one car. In
 this case, the only customer who has more than one car is Customer #1.
 
@@ -352,33 +366,40 @@ The results will look like:
 | 1          | 2              |
 
 ## WHERE clause with NULL/NOT NULL values
+
+This statement will return all `Employee` records where the value of the `ManagerId` column is `NULL`.
 ```sql
-SELECT * 
-FROM Employees
-WHERE MaganerId IS NULL
+SELECT 
+    *
+FROM
+    Employees
+WHERE
+    ManagerId IS NULL;
++----+-------+-------+-------------+-----------+--------------+---------+------------+-------------+--------------+
+| Id | FName | LName | PhoneNumber | ManagerId | DepartmentId | Salary  | Hire_Date  | CreatedDate | ModifiedDate |
++----+-------+-------+-------------+-----------+--------------+---------+------------+-------------+--------------+
+|  1 | James | Smith | 1234567890  |      NULL |            1 | 1000.00 | 2002-01-01 | 2002-01-01  | 2002-01-01   |
++----+-------+-------+-------------+-----------+--------------+---------+------------+-------------+--------------+
+1 row in set (0.00 sec)    
 ```
-This statement will return all Employee records where the value of the ManagerId column is NULL.
 
-The result will be:
-
-| Id | FName | LName | PhoneNumber | ManagerId | DepartmentId |
-|----|-------|-------|-------------|-----------|--------------|
-| 1  | James | Smith | 1234567890  | NULL      | 1            |
-
+This statement will return all `Employee` records where the value of the `ManagerId` is not `NULL`.
 ```sql
-SELECT * 
-FROM Employees
-WHERE ManagerId IS NOT NULL;
+SELECT 
+    *
+FROM
+    Employees
+WHERE
+    ManagerId IS NOT NULL;
++----+-----------+----------+-------------+-----------+--------------+--------+------------+-------------+--------------+
+| Id | FName     | LName    | PhoneNumber | ManagerId | DepartmentId | Salary | Hire_Date  | CreatedDate | ModifiedDate |
++----+-----------+----------+-------------+-----------+--------------+--------+------------+-------------+--------------+
+|  2 | John      | Johnson  | 2468101214  |         1 |            1 | 400.00 | 2005-03-23 | 2005-03-23  | 2002-01-01   |
+|  3 | Michael   | Williams | 1357911131  |         1 |            2 | 600.00 | 2009-05-12 | 2009-05-12  | NULL         |
+|  4 | Johnathon | Smith    | 1212121212  |         2 |            1 | 500.00 | 2016-07-24 | 2016-07-24  | 2002-01-01   |
++----+-----------+----------+-------------+-----------+--------------+--------+------------+-------------+--------------+
+3 rows in set (0.00 sec)    
 ```
-This statement will return all Employee records where the value of the ManagerId is not NULL.
-
-The result will be:
-
-| Id  | FName     | LName    | PhoneNumber  | ManagerId | DepartmentId |
-|-----|-----------|----------|--------------|-----------|--------------|
-| 2   | John      | Johnson  | 2468101214   | 1         | 1            |
-| 3   | Michael   | Williams | 1357911131   | 1         | 2            |
-| 4   | Johnathon | Smith    | 1212121212   | 2         | 1            |
 
 Note: The same query will not return results if you change the WHERE clause to `WHERE ManagerId = NULL` or `WHERE
 ManagerId <> NULL`.
@@ -412,15 +433,15 @@ Will only return the rows where the DepartmentId is equal to 1:
 
 
 ## The WHERE clause only returns rows that match its criteria
-Steam has a games under $10 section of their store page. Somewhere deep in the heart of their systems, there's
-probably a query that looks something like:
+Steam has a games under $10 section of their store page. Somewhere deep in the heart of their systems, there's probably 
+a query that looks something like:
 ```sql
 SELECT *
 FROM Items
 WHERE Price < 10
 ```
 
-## AND and OR
+## AND, and OR
 You can also combine several operators together to create more complex WHERE conditions. The following examples
 use the Employees table:
 
@@ -469,7 +490,7 @@ FROM Cars
 WHERE TotalCost = 100 OR TotalCost = 200 or TotalCost = 300
 ```
 
-## Use LIKE to ﬁnd matching strings and substrings
+## Use LIKE to find matching strings and substrings
 See full documentation on LIKE operator.
 
 This example uses the Employees Table from the Example Databases.
@@ -478,7 +499,7 @@ SELECT *
 FROM Employees
 WHERE FName LIKE 'John'
 ```
-This query will only return Employee #1 whose ﬁrst name matches 'John' exactly. 
+This query will only return Employee #1 whose first name matches 'John' exactly. 
 ```sql
 SELECT *
 FROM Employees
@@ -491,12 +512,91 @@ Adding % allows you to search for a substring:
 In this case, the query will return Employee #2 whose name is 'John' as well as Employee #4 whose name is
 'Johnathon'.
 
-## Where EXISTS
-Will select records in TableName that have records matching in TableName1.
+
+## Understanding WHERE EXISTS in SQL
+### Overview
+The `WHERE EXISTS` clause is used in SQL to filter rows based on the presence of rows in a related subquery. It checks 
+if the subquery returns any rows and, if it does, the condition is considered met. It is often used when you need to 
+check the existence of records in one table based on criteria from another table.
+
+### How WHERE EXISTS Works
+- `EXISTS` evaluates to `TRUE` if the subquery returns one or more rows.
+- If the subquery returns no rows, `EXISTS` evaluates to `FALSE`.
+- The subquery usually contains a correlated reference to the outer query, often linking the two tables based on a 
+  common column.
+
+### Syntax
 ```sql
-SELECT * FROM TableName t WHERE EXISTS (
-    SELECT 1 FROM TableName1 t1 where t.Id = t1.Id)
+SELECT columns
+FROM TableName t
+WHERE EXISTS (
+    SELECT 1 
+    FROM TableName1 t1 
+    WHERE t.Id = t1.Id
+);
 ```
+
+### Explanation of the Syntax
+- **`SELECT columns FROM TableName t`**: This part selects the desired columns from the main table (`TableName`).
+- **`WHERE EXISTS`**: Checks whether the subquery returns any rows.
+- **Subquery (`SELECT 1 FROM TableName1 t1 WHERE t.Id = t1.Id`)**: Returns rows based on the condition; if any row is 
+  found, the `EXISTS` clause is satisfied.
+
+### Example Scenario
+
+### Tables:
+1. **`Orders` Table**
+
+| OrderId | CustomerId | OrderDate   |
+|---------|------------|-------------|
+| 1       | 101        | 2024-01-01  |
+| 2       | 102        | 2024-02-01  |
+| 3       | 103        | 2024-03-01  |
+| 4       | 101        | 2024-04-01  |
+
+2. **`Customers` Table**
+
+| CustomerId | Name     |
+|------------|----------|
+| 101        | Alice    |
+| 104        | Bob      |
+
+### Example Query: Using WHERE EXISTS
+Let's say we want to find all `Orders` placed by customers who exist in the `Customers` table.
+
+```sql
+SELECT * 
+FROM Orders o 
+WHERE EXISTS (
+    SELECT 1 
+    FROM Customers c 
+    WHERE o.CustomerId = c.CustomerId
+);
+```
+
+### Explanation of the Example
+- **Main Query**: Selects all columns from the `Orders` table (`o`).
+- **Subquery**: Selects `1` from the `Customers` table (`c`) where the `CustomerId` in `Orders` matches a `CustomerId` 
+  in `Customers`.
+- **Result**: The query will return orders for customers that exist in the `Customers` table.
+
+### Result:
+
+| OrderId | CustomerId | OrderDate   |
+|---------|------------|-------------|
+| 1       | 101        | 2024-01-01  |
+| 4       | 101        | 2024-04-01  |
+
+### Key Points
+- **Performance**: `EXISTS` is efficient for checking the existence of records without scanning the entire table, as it 
+  stops searching once it finds a match.
+- **Difference from `IN`**: `EXISTS` is often preferred over `IN` when dealing with subqueries because it stops 
+  processing once a match is found, whereas `IN` evaluates all values.
+- **Use Case**: Commonly used for filtering records based on relationships between tables, such as verifying whether
+  related records exist.
+
+### Conclusion
+The `WHERE EXISTS` clause is a powerful tool for checking the presence of related records in another table, making it an essential component for filtering results based on relationships between data sets. Understanding its behavior helps optimize queries and improve data retrieval efficiency.
 
 ## Use HAVING to check for multiple conditions in a group
 Orders Table
@@ -511,11 +611,14 @@ Orders Table
 
 To check for customers who have ordered both - ProductID 2 and 3, HAVING can be used
 ```sql
-SELECT CustomerID
-FROM Orders
-WHERE ProductId IN (2,3)
+SELECT 
+    CustomerID
+FROM
+    Orders
+WHERE
+    ProductId IN (2 , 3)
 GROUP BY CustomerId
-HAVING COUNT(DISTINCT ProductId) = 2
+HAVING COUNT(DISTINCT ProductId) = 2;
 ```
 Return value:
 
@@ -531,8 +634,8 @@ Another possibility would be
 SELECT CustomerId
 FROM Orders
 GROUP BY CustomerId
-HAVING SUM(CASE WHEN ProductId = 2 THEN 1 ELSE 0 END ) > 0
-       SUM(CASE WHEN ProductId = 3 THEN 1 ELSE 0 END ) > 0
+HAVING SUM(CASE WHEN ProductId = 2 THEN 1 ELSE 0 END) > 0
+   AND SUM(CASE WHEN ProductId = 3 THEN 1 ELSE 0 END) > 0;
 ```
 
 This query selects only groups having at least one record with productID 2 and at least one with productID 3.
