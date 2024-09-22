@@ -1,5 +1,5 @@
 ## EXPLAIN Select query
-An Explain infront of a select query shows you how the query will be executed. This way you to see if the query
+An Explain in front of a select query shows you how the query will be executed. This way you to see if the query
 uses an index or if you could optimize your query by adding an index.
 
 Example query:
@@ -16,7 +16,7 @@ Example result:
 | 1   | SIMPLE      | data  | ref   | fk_user       | fk_user | 5       | user.test | 1     | (null)                   |
 
 on type you see if an index was used. In the column possible_keys you see if the execution plan can choose from
-diﬀerent indexes of if none exists. key tells you the acutal used index. key_len shows you the size in bytes for one
+diﬀerent indexes of if none exists. key tells you the actual used index. key_len shows you the size in bytes for one
 index item. The lower this value is the more index items ﬁt into the same memory size an they can be faster
 processed. rows shows you the expected number of rows the query needs to scan, the lower the better.
 

@@ -4,6 +4,29 @@
 
 The following examples use the Item Sales and Customers sample databases.
 
+<details>
+<summary>Create and Populate the ItemSales Table</summary>
+
+```sql
+CREATE TABLE ItemSales (
+    Id INT PRIMARY KEY,
+    SaleDate DATE NOT NULL,
+    ItemId INT NOT NULL,
+    Quantity INT NOT NULL,
+    Price DECIMAL(10 , 2 ) NOT NULL
+);
+
+INSERT INTO ItemSales (Id, SaleDate, ItemId, Quantity, Price) VALUES
+(1, '2013-07-11', 100, 20, 34.50),
+(4, '2013-07-23', 100, 15, 34.50),
+(5, '2013-07-24', 145, 10, 34.50),
+(3, '2013-07-11', 100, 20, 34.50),
+(6, '2013-05-24', 100, 20, 34.50),
+(7, '2013-05-23', 100, 20, 34.50);
+```
+
+</details>
+
 Using the BETWEEN operator with Numbers:
 ```sql
 SELECT * FROM ItemSales
@@ -339,6 +362,25 @@ Unlike the WHERE clause, HAVING can be used with aggregate functions.
 
 Common aggregate functions include `COUNT()`, `SUM()`, `MIN()`, and `MAX()`.
 
+<details>
+<summary>Create and Populate the Cars Table</summary>
+
+```sql
+CREATE TABLE Cars (
+    Id INT PRIMARY KEY,
+    CustomerId INT,
+    Model VARCHAR(50),
+    TotalCost INT
+);
+
+INSERT INTO Cars (Id, CustomerId, Model, TotalCost) VALUES
+(1, 1, 'Toyota Camry', 200),     -- Customer #1, Car costs 200
+(2, 1, 'Honda Accord', 100),     -- Customer #1, Car costs 100
+(3, 2, 'Ford Focus', 300),       -- Customer #2, Car costs 300
+(4, 3, 'Chevrolet Malibu', 150);-- Customer #3, Car costs 150
+```
+</details>
+
 This example uses the Car Table from the Example Databases.
 
 **MS SQL Server**
@@ -366,6 +408,31 @@ The results will look like:
 | 1          | 2              |
 
 ## WHERE clause with NULL/NOT NULL values
+
+<details>
+<summary>Create and Populate the Employees Table</summary>
+
+```sql
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    FName VARCHAR(50),
+    LName VARCHAR(50),
+    PhoneNumber VARCHAR(15),
+    ManagerId INT NULL,
+    DepartmentId INT,
+    Salary DECIMAL(10 , 2 ),
+    Hire_Date DATE,
+    CreatedDate DATE,
+    ModifiedDate DATE NULL
+);
+
+INSERT INTO Employees (Id, FName, LName, PhoneNumber, ManagerId, DepartmentId, Salary, Hire_date, CreatedDate, ModifiedDate) VALUES
+(1, 'James', 'Smith', '1234567890', NULL, 1, 1000, '2002-01-01', '2002-01-01', '2002-01-01'),
+(2, 'John', 'Johnson', '2468101214', 1, 1, 400, '2005-03-23', '2005-03-23', '2002-01-01'),
+(3, 'Michael', 'Williams', '1357911131', 1, 2, 600, '2009-05-12', '2009-05-12', NULL),
+(4, 'Johnathon', 'Smith', '1212121212', 2, 1, 500, '2016-07-24', '2016-07-24', '2002-01-01');
+```
+</details>
 
 This statement will return all `Employee` records where the value of the `ManagerId` column is `NULL`.
 ```sql
@@ -599,6 +666,27 @@ WHERE EXISTS (
 The `WHERE EXISTS` clause is a powerful tool for checking the presence of related records in another table, making it an essential component for filtering results based on relationships between data sets. Understanding its behavior helps optimize queries and improve data retrieval efficiency.
 
 ## Use HAVING to check for multiple conditions in a group
+<details>
+<summary>Create and Populate the Orders</summary>
+
+```sql
+CREATE TABLE Orders (
+    CustomerId INT,          -- ID of the customer who placed the order
+    ProductId INT,           -- ID of the product ordered
+    Quantity INT,            -- Quantity of the product ordered
+    Price DECIMAL(10, 2)     -- Price of the product
+);
+
+
+INSERT INTO Orders (CustomerId, ProductId, Quantity, Price) VALUES
+(1, 2, 5, 100),  -- Customer #1 ordered Product #2
+(1, 3, 2, 200),  -- Customer #1 ordered Product #3
+(1, 4, 1, 500),  -- Customer #1 ordered Product #4
+(2, 1, 4, 50),   -- Customer #2 ordered Product #1
+(3, 5, 6, 700);  -- Customer #3 ordered Product #5
+```
+
+</details>
 Orders Table
 
 | CustomerId | ProductId | Quantity | Price |

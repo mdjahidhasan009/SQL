@@ -212,7 +212,10 @@ window when query is ran again.
 * [LIKE](./like.md)
 * [IN clause](./in_clause.md)
 * [Filter using WHERE and HAVING](./filter_using_WHERE_and_HAVING.md)
-* 
+* [SKIP TAKE (Pagination)](./skip_take_pagination.md)
+* [EXCEPT](./except.md)
+* [EXPLAIN and DESCRIBE](./explain_describe.md)
+* [EXISTS](./exists_clause.md)
 
 
 
