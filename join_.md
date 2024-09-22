@@ -1,18 +1,19 @@
 # JOIN
-JOIN is a method of combining (joining) information from two tables. The result is a stitched set of columns from
-both tables, deﬁned by the join type (INNER/OUTER/CROSS and LEFT/RIGHT/FULL, explained below) and join criteria
-(how rows from both tables relate).
+`JOIN` is a method of combining (joining) information from two tables. The result is a stitched set of columns from
+both tables, defined by the join type (`INNER`/`OUTER`/`CROSS` and `LEFT`/`RIGHT`/`FULL`, explained below) and join 
+criteria (how rows from both tables relate).
 
 A table may be joined to itself or to any other table. If information from more than two tables needs to be accessed,
-multiple joins can be speciﬁed in a FROM clause.
+multiple joins can be specified in a `FROM` clause.
 
 ## Self Join
-A table may be joined to itself, with diﬀerent rows matching each other by some condition. In this use case, aliases
+A table may be joined to itself, with different rows matching each other by some condition. In this use case, aliases
 must be used in order to distinguish the two occurrences of the table.
 
-In the below example, for each Employee in the example database Employees table, a record is returned containing
-the employee's ﬁrst name together with the corresponding ﬁrst name of the employee's manager. Since managers
-are also employees, the table is joined with itself:
+In the below example, for each Employee in the example database `Employees` table, a record is returned containing the 
+employee's first name together with the corresponding first name of the employee's manager. Since managers are also 
+employees, the table is joined with itself:
+
 ```sql
 SELECT 
     e.FName AS "Employee",
@@ -43,31 +44,31 @@ The original table contains these records:
 | 3   | Michael   | Williams | 1357911131   | 1         | 2            | 600    | 12-05-2009 |
 | 4   | Johnathon | Smith    | 1212121212   | 2         | 1            | 500    | 24-07-2016 |
 
-The ﬁrst action is to create a Cartesian product of all records in the tables used in the FROM clause. In this case it's
-the Employees table twice, so the intermediate table will look like this (I've removed any ﬁelds not used in this
+The first action is to create a Cartesian product of all records in the tables used in the `FROM` clause. In this case
+it's the `Employees` table twice, so the intermediate table will look like this (I've removed any fields not used in this
 example):
 
-| e.Id | e.FName     | e.ManagerId | m.Id | m.FName   | m.ManagerId |
-|------|-------------|-------------|------|-----------|-------------|
-| 1    | James       | NULL        | 1    | James     | NULL        |
-| 1    | James       | NULL        | 2    | John      | 1           |
-| 1    | James       | NULL        | 3    | Michael   | 1           |
-| 1    | James       | NULL        | 4    | Johnathon | 2           |
-| 2    | John        | 1           | 1    | James     | NULL        |
-| 2    | John        | 1           | 2    | John      | 1           |
-| 2    | John        | 1           | 3    | Michael   | 1           |
-| 2    | John        | 1           | 4    | Johnathon | 2           |
-| 3    | Michael     | 1           | 1    | James     | NULL        |
-| 3    | Michael     | 1           | 2    | John      | 1           |
-| 3    | Michael     | 1           | 3    | Michael   | 1           |
-| 3    | Michael     | 1           | 4    | Johnathon | 2           |
-| 4    | Johnathon   | 2           | 1    | James     | NULL        |
-| 4    | Johnathon   | 2           | 2    | John      | 1           |
-| 4    | Johnathon   | 2           | 3    | Michael   | 1           |
-| 4    | Johnathon   | 2           | 4    | Johnathon | 2           |
+| e.Id  | e.FName       | e.ManagerId  | m.Id  | m.FName    | m.ManagerId |
+|-------|---------------|--------------|-------|------------|-------------|
+| 1     | James         | NULL         | 1     | James      | NULL        |
+| 1     | James         | NULL         | 2     | John       | 1           |
+| 1     | James         | NULL         | 3     | Michael    | 1           |
+| 1     | James         | NULL         | 4     | Johnathon  | 2           |
+| **2** | **John**      | **1**        | **1** | **James**  | **NULL**    |
+| 2     | John          | 1            | 2     | John       | 1           |
+| 2     | John          | 1            | 3     | Michael    | 1           |
+| 2     | John          | 1            | 4     | Johnathon  | 2           |
+| **3** | **Michael**   | **1**        | **1** | **James**  | **NULL**    |
+| 3     | Michael       | 1            | 2     | John       | 1           |
+| 3     | Michael       | 1            | 3     | Michael    | 1           |
+| 3     | Michael       | 1            | 4     | Johnathon  | 2           |
+| 4     | Johnathon     | 2            | 1     | James      | NULL        |
+| **4** | **Johnathon** | **2**        | **2** | **John**   | **1**       |
+| 4     | Johnathon     | 2            | 3     | Michael    | 1           |
+| 4     | Johnathon     | 2            | 4     | Johnathon  | 2           |
 
-The next action is to only keep the records that meet the JOIN criteria, so any records where the aliased e table
-ManagerId equals the aliased m table Id:
+The next action is to only keep the records that meet the `JOIN` criteria, so any records where the aliased `e` table
+`ManagerId` equals the aliased `m` table `Id`:
 
 | e.Id | e.FName     | e.ManagerId | m.Id | m.FName | m.ManagerId |
 |------|-------------|-------------|------|---------|-------------|
@@ -75,7 +76,7 @@ ManagerId equals the aliased m table Id:
 | 3    | Michael     | 1           | 1    | James   | NULL        |
 | 4    | Johnathon   | 2           | 2    | John    | 1           |
 
-Then, each expression used within the SELECT clause is evaluated to return this table:
+Then, each expression used within the `SELECT` clause is evaluated to return this table:
 
 | e.FName   | m.FName |
 |-----------|---------|
@@ -83,7 +84,7 @@ Then, each expression used within the SELECT clause is evaluated to return this 
 | Michael   | James   |
 | Johnathon | John    |
 
-Finally, column names e.FName and m.FName are replaced by their alias column names, assigned with the AS operator:
+Finally, column names `e.FName` and `m.FName` are replaced by their alias column names, assigned with the `AS` operator:
 
 | Employee  | Manager |
 |-----------|---------|
@@ -91,11 +92,13 @@ Finally, column names e.FName and m.FName are replaced by their alias column nam
 | Michael   | James   |
 | Johnathon | John    |
 
+
 ## Differences between inner/outer joins
-SQL has various join types to specify whether (non-)matching rows are included in the result: INNER JOIN, LEFT
-OUTER JOIN, RIGHT OUTER JOIN, and FULL OUTER JOIN (the INNER and OUTER keywords are optional). The ﬁgure
-below underlines the diﬀerences between these types of joins: the blue area represents the results returned by the
-join, and the white area represents the results that the join will not return.
+Inner joins return only matching rows between tables, focusing solely on common data, while outer joins (left, right, 
+and full) include unmatched rows: left joins return all rows from the left table with matches from the right; right 
+joins return all rows from the right table with matches from the left; and full joins include all rows from both tables,
+filling unmatched pairs with NULL. The choice of join determines whether non-matching data is included, making outer 
+joins more comprehensive than inner joins.
 
 <img src="./images/join_/join_.png" alt="join_" />
 
@@ -107,14 +110,40 @@ Cross Join SQL Pictorial Presentation:
 
 source: [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
 
+<details>
+<summary>Create and insert data into tables a, b</summary>
+
+```sql
+CREATE TABLE a (
+    a INT
+);
+
+INSERT INTO a (a) VALUES (1), (2), (3), (4);
+
+CREATE TABLE b (
+    b INT
+);
+
+INSERT INTO b (b) VALUES (3), (4), (5), (6);
+```
+</details>
+
 Below are examples from this answer. For instance there are two tables as below :
 
-| A | B |
-|---|---|
-| 1 | 3 |
-| 2 | 4 |  
-| 3 | 5 |
-| 4 | 6 |
+| A |
+|---|
+| 1 |
+| 2 |  
+| 3 |
+| 4 |
+
+|  B |
+|----|
+| 3  |
+| 4  |  
+| 5  |
+| 6  |
+
 
 Note that (1,2) are unique to A, (3,4) are common, and (5,6) are unique to B.
 
@@ -122,8 +151,35 @@ Note that (1,2) are unique to A, (3,4) are common, and (5,6) are unique to B.
 An inner join using either of the equivalent queries gives the intersection of the two tables, i.e. the two rows they
 have in common:
 ```sql
-SELECT * FROM a INNER JOIN b ON a.a = b.b;
-SELECT * a.*, b.* FROM a,b where a.a = b.b;
+SELECT 
+    *
+FROM
+    a
+        INNER JOIN
+    b ON a.a = b.b;
++------+------+
+| a    | b    |
++------+------+
+|    3 |    3 |
+|    4 |    4 |
++------+------+
+2 rows in set (0.00 sec)
+
+    
+SELECT 
+    a.*, b.*
+FROM
+    a,
+    b
+WHERE
+    a.a = b.b;
++------+------+
+| a    | b    |
++------+------+
+|    3 |    3 |
+|    4 |    4 |
++------+------+
+2 rows in set (0.00 sec)    
 ```
 | A | B |
 |---|---|  
@@ -131,9 +187,23 @@ SELECT * a.*, b.* FROM a,b where a.a = b.b;
 | 4 | 4 |
 
 ### Left outer join
-A left outer join will give all rows in A, plus any common rows in B:
+A left outer join will give all rows in `A`, plus any common rows in `B`:
 ```sql
-SELECT * FROM a LEFT OUTER JOIN b ON a.a = b.b;
+SELECT 
+    *
+FROM
+    a
+        LEFT OUTER JOIN
+    b ON a.a = b.b;  
++------+------+
+| a    | b    |
++------+------+
+|    1 | NULL |
+|    2 | NULL |
+|    3 |    3 |
+|    4 |    4 |
++------+------+
+4 rows in set (0.00 sec)    
 ```
 | A | B    |
 |---|------|
@@ -143,9 +213,23 @@ SELECT * FROM a LEFT OUTER JOIN b ON a.a = b.b;
 | 4 | 4    |
 
 ### Right outer join
-Similarly, a right outer join will give all rows in B, plus any common rows in A:
+Similarly, a right outer join will give all rows in `B`, plus any common rows in `A`:
 ```sql
-SELECT * FROM a RIGHT OUTER JOIN b ON a.a = b.b;
+SELECT 
+    *
+FROM
+    a
+        RIGHT OUTER JOIN
+    b ON a.a = b.b;   
++------+------+
+| a    | b    |
++------+------+
+|    3 |    3 |
+|    4 |    4 |
+| NULL |    5 |
+| NULL |    6 |
++------+------+
+4 rows in set (0.00 sec)    
 ```
 | A    | B |
 |------|---|
@@ -155,12 +239,35 @@ SELECT * FROM a RIGHT OUTER JOIN b ON a.a = b.b;
 | NULL | 6 |
 
 ### Full outer join
-A full outer join will give you the union of A and B, i.e., all the rows in A and all the rows in B. If something in A
-doesn't have a corresponding datum in B, then the B portion is null, and vice versa.
+A full outer join will give you the union of `A` and `B`, i.e., all the rows in `A` and all the rows in `B`. If .
+something in `A` doesn't have a corresponding datum in `B`, then the `B` portion is `null`, and vice versa.
 
+**MS SQL Server / MS Access Syntax:**
 ```sql
-SELECT * FROM a FULL OUTER JOIN b ON a.a = b.b;
+SELECT * FROM a FULL OUTER JOIN b ON a.a = b.b; 
 ```
+MySQL doesn't support `FULL OUTER JOIN`. You can achieve the same result with `UNION`:
+```sql
+SELECT * 
+FROM a 
+LEFT JOIN b ON a.a = b.b
+UNION
+SELECT * 
+FROM a 
+RIGHT JOIN b ON a.a = b.b;
++------+------+
+| a    | b    |
++------+------+
+|    1 | NULL |
+|    2 | NULL |
+|    3 |    3 |
+|    4 |    4 |
+| NULL |    5 |
+| NULL |    6 |
++------+------+
+6 rows in set (0.00 sec)
+```
+
 | A    | B    |
 |------|------|
 | 1    | NULL |
@@ -171,7 +278,7 @@ SELECT * FROM a FULL OUTER JOIN b ON a.a = b.b;
 | NULL | 6    |
 
 ## JOIN Terminology: Inner, Outer, Semi, Anti..
-Let's say we have two tables (A and B) and some of their rows match (relative to the given JOIN condition, whatever it 
+Let's say we have two tables (`A` and `B`) and some of their rows match (relative to the given `JOIN` condition, whatever it 
 may be in the particular case):
 
 <img src="./images/join_/join_3.png" alt="join_3" />
@@ -215,7 +322,7 @@ Combines left and right rows that match.
 
 source: [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
 ```sql
-SELECT * FORM A JOIN B ON X = Y;
+SELECT * FROM A JOIN B ON X = Y;
 ```
 
 | X     | Y     |
@@ -267,9 +374,25 @@ Sometimes abbreviated to "full join". Union of left and right outer join.
 
 source: [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
 
+**MS SQL Server / MS Access Syntax:**
 ```sql
-SELECT * FROM A FULL JOIN B ON X = Y;
+SELECT * FROM A FULL OUTER JOIN B ON X = Y;
 ```
+**MySQL Syntax:**
+```sql
+-- Use LEFT JOIN to get all rows from A with matching rows from B
+SELECT A.X, B.Y 
+FROM A 
+LEFT JOIN B ON A.X = B.Y
+
+UNION
+
+-- Use RIGHT JOIN to get all rows from B with matching rows from A
+SELECT A.X, B.Y 
+FROM A 
+RIGHT JOIN B ON A.X = B.Y;
+```
+
 | X     | Y       |
 |-------|---------|
 | Amy   | NULL    |
@@ -311,7 +434,7 @@ SELECT * FROM B WHERE Y IN (SELECT X FROM A);
 | Marco |
 | Phil  |
 
-As you can see, there is no dedicated IN syntax for left vs. right semi join - we achieve the eﬀect simply by switching
+As you can see, there is no dedicated IN syntax for left vs. right semi join - we achieve the effect simply by switching
 the table positions within SQL text.
 
 ### Left Anti Semi Join
@@ -347,7 +470,7 @@ SELECT * FROM B WHERE Y NOT IN (SELECT X FROM A);
 | Tim     |
 | Vincent |
 
-As you can see, there is no dedicated `NOT IN` syntax for left vs. right anti semi join - we achieve the eﬀect simply by
+As you can see, there is no dedicated `NOT IN` syntax for left vs. right anti-semi join - we achieve the effect simply by
 switching the table positions within SQL text.
 
 ### Cross Join
@@ -391,10 +514,15 @@ SELECT * FROM A JOIN B ON 1 = 1;
 
 ### Self-Join
 This simply denotes a table joining with itself. A self-join can be any of the join types discussed above. For example,
-this is a an inner self-join:
+this is a inner self-join:
 
+**MS SQL Server / MS Access Syntax:**
 ```sql
 SELECT * FROM A A1 JOIN A A2 ON LEN(A1.X) < LEN(A2.X);
+```
+**MySQL Syntax:**
+```sql
+SELECT * FROM A A1 JOIN A A2 ON LENGTH(A1.X) < LENGTH(A2.X);
 ```
 
 | X     | Y      |
@@ -409,9 +537,9 @@ SELECT * FROM A A1 JOIN A A2 ON LEN(A1.X) < LEN(A2.X);
 
 ## Left Outer Join
 A Left Outer Join (also known as a Left Join or Outer Join) is a Join that ensures all rows from the left table are
-represented; if no matching row from the right table exists, its corresponding ﬁelds are NULL.
+represented; if no matching row from the right table exists, its corresponding fields are NULL.
 
-The following example will select all departments and the ﬁrst name of employees that work in that department.
+The following example will select all departments and the first name of employees that work in that department.
 Departments with no employees are still returned in the results, but will have NULL for the employee name:
 
 ```sql
@@ -476,7 +604,7 @@ return Tech with NULL
 | 3     | Tech      | 3     | Michael       | Williams     | 1357911131     | 1         | 2            | 600      | 12-05-2009     |
 | 3     | Tech      | 4     | Johnathon     | Smith        | 1212121212     | 2         | 1            | 500      | 24-07-2016     |
 
-Finally each expression used within the SELECT clause is evaluated to return our ﬁnal table:
+Finally, each expression used within the SELECT clause is evaluated to return our final table:
 
 | Departments.Name | Employees.FName |
 |------------------|-----------------| 
@@ -486,18 +614,18 @@ Finally each expression used within the SELECT clause is evaluated to return our
 | Tech             | NULL            |
 
 ## Implicit Join
-Joins can also be performed by having several tables in the from clause, separated with commas , and deﬁning the
-relationship between them in the where clause. This technique is called an Implicit Join (since it doesn't actually
+Joins can also be performed by having several tables in the `FROM` clause, separated with commas , and defining the
+relationship between them in the `WHERE` clause. This technique is called an Implicit Join (since it doesn't actually
 contain a join clause).
 
 All RDBMSs support it, but the syntax is usually advised against. The reasons why it is a bad idea to use this syntax
 are:
 * It is possible to get accidental cross joins which then return incorrect results, especially if you have a lot of
   joins in the query.
-* If you intended a cross join, then it is not clear from the syntax (write out CROSS JOIN instead), and someone
+* If you intended a cross join, then it is not clear from the syntax (write out `CROSS JOIN` instead), and someone
   is likely to change it during maintenance.
 
-The following example will select employee's ﬁrst names and the name of the departments they work for:
+The following example will select employee's first names and the name of the departments they work for:
 ```sql
 SELECT e.FName, d.Name
 FROM
@@ -550,8 +678,8 @@ which is also known as CROSS APPLY/OUTER APPLY in SQL-Server & Oracle.
 
 The basic idea is that a table-valued function (or inline subquery) gets applied for every row you join.
 
-This makes it possible to, for example, only join the ﬁrst matching entry in another table.
-The diﬀerence between a normal and a lateral join lies in the fact that you can use a column that you previously
+This makes it possible to, for example, only join the first matching entry in another table.
+The difference between a normal and a lateral join lies in the fact that you can use a column that you previously
 joined in the subquery that you "CROSS APPLY".
 
 Syntax:
@@ -664,7 +792,7 @@ FULL JOIN behaves kind-of like a UNION);
 It's easy to overlook this little fact, since you put AP_SoftDeleteStatus = 1 in the join clause.
 
 Also, if you are doing a FULL JOIN, you'll usually have to allow NULL in the WHERE-clause; forgetting to allow NULL
-on a value will have the same eﬀects as an INNER join, which is something you don't want if you're doing a FULL
+on a value will have the same effects as an INNER join, which is something you don't want if you're doing a FULL
 JOIN.
 
 Example:
@@ -705,9 +833,9 @@ SELECT * FROM MyDescendants;
 ```
 
 ## Basic explicit inner join
-A basic join (also called "inner join") queries data from two tables, with their relationship deﬁned in a join clause.
+A basic join (also called "inner join") queries data from two tables, with their relationship defined in a join clause.
 
-The following example will select employees' ﬁrst names (FName) from the Employees table and the name of the
+The following example will select employees' first names (FName) from the Employees table and the name of the
 department they work for (Name) from the Departments table:
 
 ```sql
@@ -728,10 +856,10 @@ This would return the following from the example database:
 ## Joining on a Subquery
 Joining a subquery is often used when you want to get aggregate data from a child/details table and display that
 along with records from the parent/header table. For example, you might want to get a count of child records, an
-average of some numeric column in child records, or the top or bottom row based on a date or numeric ﬁeld. This
+average of some numeric column in child records, or the top or bottom row based on a date or numeric field. This
 example uses aliases, which arguable makes queries easier to read when you have multiple tables involved. Here's
 what a fairly typical subquery join looks like. In this case we are retrieving all rows from the parent table Purchase
-Orders and retrieving only the ﬁrst row for each parent record of the child table PurchaseOrderLineItems.
+Orders and retrieving only the first row for each parent record of the child table PurchaseOrderLineItems.
 
 ```sql
 SELECT po.Id, po.PODate, po.VendorName, po.Status, item.ItemNo,
