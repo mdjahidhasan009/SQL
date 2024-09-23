@@ -207,3 +207,19 @@ FROM
     Departments
         LEFT OUTER JOIN
     Employees ON Departments.Id = Employees.DepartmentId;
+
+
+SELECT 
+    e.FName, d.Name
+FROM
+    Employees e,
+    Departments d
+WHERE
+    e.DepartmentId = d.Id;
+    
+SELECT 
+    d.Name, e.FName
+FROM
+    Departments d
+        CROSS JOIN
+    Employees e;    
