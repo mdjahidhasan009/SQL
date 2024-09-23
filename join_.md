@@ -445,7 +445,7 @@ Includes left rows that do not match right rows.
 source: [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
 
 ```sql
-SELECT * FROM A WHERE X NOT IN (SELECT Y FROM B);
+  SELECT * FROM A WHERE X NOT IN (SELECT Y FROM B);
 ```
 
 | X     |
@@ -512,9 +512,9 @@ have returned the same result:
 SELECT * FROM A JOIN B ON 1 = 1;
 ```
 
-### Self-Join
-This simply denotes a table joining with itself. A self-join can be any of the join types discussed above. For example,
-this is a inner self-join:
+### Self Join
+This simply denotes a table joining with itself. A self join can be any of the join types discussed above. For example,
+this is an inner self join:
 
 **MS SQL Server / MS Access Syntax:**
 ```sql
@@ -543,10 +543,12 @@ The following example will select all departments and the first name of employee
 Departments with no employees are still returned in the results, but will have NULL for the employee name:
 
 ```sql
-SELECT                  Departments.Name, Employees.FName
-FROM                    Departmants 
-LEFT OUTER JOIN         Employees
-ON                      Department.Id = Employees.DepartmentId
+SELECT 
+    Departments.Name, Employees.FName
+FROM
+    Departments
+        LEFT OUTER JOIN
+    Employees ON Departments.Id = Employees.DepartmentId;
 ```
 This would return the following from the example database:
 
@@ -581,12 +583,12 @@ Departments Table
 | 3   | Tech  |
 
 First a Cartesian product is created from the two tables giving an intermediate table. The records that meet the join 
-criteria (Departments.Id = Employees.DepartmentId) are highlighted in bold; these are passed to the next stage of the 
+criteria (`Departments.Id = Employees.DepartmentId`) are highlighted in bold; these are passed to the next stage of the 
 query.
 
-As this is a LEFT OUTER JOIN all records are returned from the LEFT side of the join (Departments), while any
-records on the RIGHT side are given a NULL marker if they do not match the join criteria. In the table below this will
-return Tech with NULL
+As this is a `LEFT OUTER JOIN` all records are returned from the LEFT side of the join (Departments), while any
+records on the RIGHT side are given a `NULL` marker if they do not match the join criteria. In the table below this will
+return Tech with `NULL`.
 
 
 | Id    | Name      | Id    | FName         | LName        | PhoneNumber    | ManagerId | DepartmentId | Salary   | HireDate       |
@@ -604,7 +606,7 @@ return Tech with NULL
 | 3     | Tech      | 3     | Michael       | Williams     | 1357911131     | 1         | 2            | 600      | 12-05-2009     |
 | 3     | Tech      | 4     | Johnathon     | Smith        | 1212121212     | 2         | 1            | 500      | 24-07-2016     |
 
-Finally, each expression used within the SELECT clause is evaluated to return our final table:
+Finally, each expression used within the `SELECT` clause is evaluated to return our final table:
 
 | Departments.Name | Employees.FName |
 |------------------|-----------------| 
@@ -614,7 +616,7 @@ Finally, each expression used within the SELECT clause is evaluated to return ou
 | Tech             | NULL            |
 
 ## Implicit Join
-Joins can also be performed by having several tables in the `FROM` clause, separated with commas , and defining the
+Joins can also be performed by having several tables in the `FROM` clause, separated with commas, and defining the
 relationship between them in the `WHERE` clause. This technique is called an Implicit Join (since it doesn't actually
 contain a join clause).
 
@@ -627,10 +629,13 @@ are:
 
 The following example will select employee's first names and the name of the departments they work for:
 ```sql
-SELECT e.FName, d.Name
+SELECT 
+    e.FName, d.Name
 FROM
-Employee e, Departments d
-WHERE e.DeptartmentId = d.Id
+    Employees e,
+    Departments d
+WHERE
+    e.DepartmentId = d.Id;
 ```
 This would return the following from the example database:
 
@@ -641,16 +646,18 @@ This would return the following from the example database:
 | Richard | Sales  |
 
 ## CROSS JOIN
-Cross join does a Cartesian product of the two members, A Cartesian product means each row of one table is
-combined with each row of the second table in the join. For example, if TABLEA has 20 rows and TABLEB has 20
-rows, the result would be 20*20 = 400 output rows
+Cross join does a Cartesian product of the two members, A Cartesian product means each row of one table is combined with 
+each row of the second table in the join. For example, if TABLE A has 20 rows and TABLE B has 20 rows, the result would be
+20*20 = 400 output rows
 
 Using example database
 ```sql
-SELECT d.Name, e.FName
+SELECT 
+    d.Name, e.FName
 FROM
-Departments d
-CROSS JOIN Employees e;
+    Departments d
+        CROSS JOIN
+    Employees e;    
 ```
 Which returns:
 
@@ -671,6 +678,8 @@ Which returns:
 
 It is recommended to write an explicit CROSS JOIN if you want to do a cartesian join, to highlight that this is what you
 want.
+
+////TODO: will modify below section later
 
 ## CROSS APPLY & LATERAL JOIN
 A very interesting type of JOIN is the LATERAL JOIN (new in PostgreSQL 9.3+),
