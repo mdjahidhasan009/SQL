@@ -542,6 +542,41 @@ represented; if no matching row from the right table exists, its corresponding f
 The following example will select all departments and the first name of employees that work in that department.
 Departments with no employees are still returned in the results, but will have NULL for the employee name:
 
+<details>
+<summary>Create Departments and Employees tables also insert data</summary>
+
+```sql
+CREATE TABLE Departments (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+INSERT INTO Departments (Id, Name) VALUES
+(1, 'HR'),
+(2, 'Sales'),
+(3, 'Tech');
+
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    FName VARCHAR(50),
+    LName VARCHAR(50),
+    PhoneNumber VARCHAR(15),
+    ManagerId INT NULL,
+    DepartmentId INT,
+    Salary DECIMAL(10 , 2 ),
+    HireDate DATE
+);
+
+INSERT INTO Employees (Id, FName, LName, PhoneNumber, ManagerId, DepartmentId, Salary, HireDate) VALUES
+(1, 'James', 'Smith', '1234567890', NULL, 1, 1000, '2002-01-01'),
+(2, 'John', 'Johnson', '2468101214', 1, 1, 400, '2005-03-23'),
+(3, 'Michael', 'Williams', '1357911131', 1, 2, 600, '2009-05-12'),
+(4, 'Johnathon', 'Smith', '1212121212', 2, 1, 500, '2016-07-24');
+```
+
+
+</details>
+
 ```sql
 SELECT 
     Departments.Name, Employees.FName
@@ -881,6 +916,77 @@ LEFT JOIN
         GROUP BY l.PurchaseOrderId, l.ItemNo, l.Description, l.Cost, l.Price
       ) AS item ON item.PurchaseOrderId = po.Id
 ```
+
+
+# SQL Query Validity Explanation
+
+This document explains the key differences between two SQL queries, highlighting why one is invalid and the other is considered a valid implicit join.
+
+## Query Analysis
+
+### 1. First Query (Invalid Query)
+```sql
+SELECT 
+    c.PhoneNumber
+FROM
+    Customers c
+WHERE 
+    c.FName = Employees.FName
+    AND c.LName = Employees.LName;
+```
+
+**Why This Query is Invalid:**
+
+- **Scope of Tables**: In this query, `Employees` is not included in the `FROM` clause, which means that it is not part of the query context.
+- **Unresolved References**: SQL cannot resolve `Employees.FName` and `Employees.LName` because `Employees` is not explicitly specified as part of the tables being queried.
+- **Expected Fix**: To fix this, you need to include `Employees` in the `FROM` clause, either through an explicit join or as an additional table reference.
+
+**Corrected Version** (Using Implicit Join):
+```sql
+SELECT 
+    c.PhoneNumber
+FROM
+    Customers c, Employees e
+WHERE 
+    c.FName = e.FName
+    AND c.LName = e.LName;
+```
+
+Or using an **Explicit Join**:
+```sql
+SELECT 
+    c.PhoneNumber
+FROM
+    Customers c
+INNER JOIN Employees e
+ON 
+    c.FName = e.FName
+    AND c.LName = e.LName;
+```
+
+### 2. Second Query (Valid Implicit Join)
+```sql
+SELECT 
+    e.FName, d.Name
+FROM
+    Employees e, Departments d
+WHERE
+    e.DepartmentId = d.Id;
+```
+
+**Why This Query is Valid:**
+
+- **Both Tables Included in `FROM` Clause**: This query lists both `Employees` and `Departments` in the `FROM` clause, allowing the SQL engine to understand that it needs to look at both tables.
+- **Implicit Join**: It uses an implicit join by specifying the join condition in the `WHERE` clause (`e.DepartmentId = d.Id`), which is valid but less readable compared to explicit join syntax.
+- **No Unresolved References**: All column references (`e.FName`, `d.Name`) are fully resolved since both tables (`Employees` and `Departments`) are specified.
+
+## Summary of Differences
+
+- **Table Scope**: The first query fails because it tries to reference `Employees` without including it in the `FROM` clause, leading to unresolved column references.
+- **Implicit Join Validity**: The second query works because both tables are correctly included in the `FROM` clause, making the join condition in the `WHERE` clause valid.
+- **Best Practice**: Always ensure that any table referenced in the `WHERE` clause is properly defined in the `FROM` clause, preferably using explicit join syntax for clarity and error prevention.
+
+By explicitly including all tables involved in your conditions, you ensure that your SQL queries are both syntactically correct and easily understandable.
 
 Sources:
 * [SQL Notes for Professionals](https://goalkicker.com/SQLBook)

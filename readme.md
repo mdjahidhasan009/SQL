@@ -216,6 +216,9 @@ window when query is ran again.
 * [EXCEPT](./except.md)
 * [EXPLAIN and DESCRIBE](./explain_describe.md)
 * [EXISTS](./exists_clause.md)
+* [UPDATE](./update.md)
+* [CREATE Database](./create_database.md)
+
 
 
 
