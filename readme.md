@@ -218,6 +218,11 @@ window when query is ran again.
 * [EXISTS](./exists_clause.md)
 * [UPDATE](./update.md)
 * [CREATE Database](./create_database.md)
+* [CREATE Table](./table/create_table.md)
+* [CREATE FUNCTION](./create_function.md)
+* [TRY CATCH](./try_catch.md)
+* [UNION or UNION ALL](./union_or_union_all.md)
+* [ALTER TABLE](./table/alter_table.md)
 
 
 

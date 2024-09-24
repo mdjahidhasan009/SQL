@@ -1,15 +1,27 @@
 ALTER command in SQL is used to modify column/constraint in a table
 
 ## Add Column(s)
+Syntax:
+```sql
+ALTER TABLE table_name
+ADD column_name datatype;
+```
+Example:
 ```sql
 ALTER TABLE Employees 
 ADD StartingDate date NOT NULL DEFAULT GetData(),
     DateOfBirth date NULL
 ```
-The above statement would add columns named StartingDate which cannot be NULL with default value as current
-date and DateOfBirth which can be NULL in Employees table.
+The above statement would add columns named `StartingDate` which cannot be `NULL` with default value as current date and
+`DateOfBirth` which can be `NULL` in Employees table.
 
 ## Drop Column
+Syntax:
+```sql
+ALTER TABLE table_name
+DROP COLUMN column_name;
+```
+Example:
 ```sql
 ALTER TABLE Employees
 DROP COLUMN salary;
@@ -18,30 +30,49 @@ This will not only delete information from that column, but will drop the column
 column will no more exist).
 
 ## Add Primary Key
+Syntax:
 ```sql
-ALTER TABLE EMPLOYEES ADD pk_EmployeeID PRIMARY KEY (ID);
+ALTER TABLE table_name
+ADD pk_column_name PRIMARY KEY(column_name);
 ```
-This will add a Primary key to the table Employees on the ﬁeld ID. Including more than one column name in the
-parentheses along with ID will create a Composite Primary Key. When adding more than one column, the column
+Example:
+```sql
+ALTER TABLE EMPLOYEES 
+ADD pk_EmployeeID PRIMARY KEY (ID);
+```
+This will add a Primary key to the table `Employees` on the field `ID`. Including more than one column name in the
+parentheses along with `ID` will create a Composite Primary Key. When adding more than one column, the column
 names must be separated by commas.
 ```sql
 ALTER TABLE EMPLOYEES ADD pk_EmployeeID PRIMARY KEY(ID, FName);
 ```
 
 ## Alter Column
+Syntax:
+```sql
+ALTER TABLE table_name
+ALTER COLUMN column_name datatype;
+```
+Example:
 ```sql
 ALTER TABLE Employees
 ALTER COLUMN StartingDate DATETIME NOT NULL DEFAULT (GETDATE())
 ```
-This query will alter the column datatype of StartingDate and change it from simple date to datetime and set
-default to current date.
+This query will alter the column datatype of StartingDate and change it from simple date to datetime and set default to 
+current date.
 
 ## Drop Constraint
+Syntax:
+```sql
+ALTER TABLE table_name
+DROP CONSTRAINT constraint_name;
+```
+Example:
 ```sql
 ALTER TABLE Employees
 DROP CONSTRAINT DefaultSalary
 ```
-This Drops a constraint called DefaultSalary from the employees table deﬁnition.
+This Drops a constraint called DefaultSalary from the employees table definition.
 
 **Note:** Ensure that constraints of the column are dropped before dropping a column.
 
@@ -56,6 +87,9 @@ using.
 In MySQL, use the `ALTER TABLE` command with the `CHANGE` keyword to rename a column. You must specify both the old
 column name, the new column name, and the column's data type.
 
+Syntax:
+```
+Example:
 ```sql
 ALTER TABLE table_name
 CHANGE old_column_name new_column_name data_type;
