@@ -27,4 +27,32 @@ INSERT INTO FINANCE_EMPLOYEES (PersonID, LastName, FirstName, Position) VALUES
 (5, 'Brown', 'Emily', 'manager'),
 (6, 'Smith', 'John', 'manager'),  -- Duplicate manager entry
 (7, 'Miller', 'Jake', 'accountant'),
-(8, 'Smith', 'John', 'manager');  -- Another duplicate
+(8, 'Smith', 'John', 'manager');-- Another duplicate
+
+
+SELECT 
+    FirstName, LastName
+FROM
+    HR_EMPLOYEES
+WHERE
+    Position = 'manager' 
+UNION SELECT 
+    FirstName, LastName
+FROM
+    FINANCE_EMPLOYEES
+WHERE
+    Position = 'manager';
+
+
+SELECT 
+    FirstName, LastName
+FROM
+    HR_EMPLOYEES
+WHERE
+    Position = 'manager' 
+UNION ALL SELECT 
+    FirstName, LastName
+FROM
+    FINANCE_EMPLOYEES
+WHERE
+    Position = 'manager';
