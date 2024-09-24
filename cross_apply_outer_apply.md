@@ -1,5 +1,5 @@
 ## CROSS APPLY and OUTER APPLY basics
-Apply will be used when when table valued function in the right expression.
+Apply will be used when table valued function in the right expression. **THOSE ARE ONLY AVAILABLE IN SQL SERVER.**
 
 create a Department table to hold information about departments. Then create an Employee table which hold
 information about the employees. Please note, each employee belongs to a department, hence the Employee table
@@ -23,7 +23,7 @@ FROM Department D
 INNER JOIN Employee E
     ON D.DepartmentID = E.DepartmentID  
 ```
-If you look at the results they produced, it is the exact same result-set; How does it diﬀer from a JOIN and how does
+If you look at the results they produced, it is the exact same result-set; How does it differ from a JOIN and how does
 it help in writing more eﬃcient queries.
 
 The ﬁrst query in Script #2 selects data from Department table and uses OUTER APPLY to evaluate the Employee
@@ -47,8 +47,8 @@ LEFT OUTER JOIN Employee E
     ON D.DepartmentID = E.DepartmentID
 GO
 ```
-Even though the above two queries return the same information, the execution plan will be bit diﬀerent. But cost
-wise there will be not much diﬀerence.
+Even though the above two queries return the same information, the execution plan will be bit different. But cost
+wise there will be not much difference.
 
 Now comes the time to see where the APPLY operator is really required. In Script #3, I am creating a table-valued
 function which accepts DepartmentID as its parameter and returns all the employees who belong to this
@@ -83,7 +83,7 @@ GO
 So now if you are wondering, can we use a simple join in place of the above queries? Then the answer is NO, if you
 replace CROSS/OUTER APPLY in the above queries with INNER JOIN/LEFT OUTER JOIN, specify ON clause (something
 as 1=1) and run the query, you will get "The multi-part identiﬁer "D.DepartmentID" could not be bound." error. This
-is because with JOINs the execution context of outer query is diﬀerent from the execution context of the function
+is because with JOINs the execution context of outer query is different from the execution context of the function
 (or a derived table), and you can not bind a value/variable from the outer query to the function as a parameter.
 Hence the APPLY operator is required for such queries.
 

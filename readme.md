@@ -223,6 +223,10 @@ window when query is ran again.
 * [TRY CATCH](./try_catch.md)
 * [UNION or UNION ALL](./union_or_union_all.md)
 * [ALTER TABLE](./table/alter_table.md)
+* [INSERT](./insert.md)
+* [MERGE](./merge.md)
+* [CROSS APPLY, OUTER APPLY](./cross_apply_outer_apply.md)
+* [DELETE](./table/delete.md)
 
 
 
