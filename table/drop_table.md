@@ -1,12 +1,12 @@
 ## Check for existence before dropping
 MySQL Version ≥ 3.19
 ```sql
-DROP TABLE IF EXITS MyTable
+DROP TABLE IF EXITS MyTable;
 ```
 
 PostgreSQL Version ≥ 8.x
 ```sql
-DROP TABLE IF EXITS MyTable
+DROP TABLE IF EXITS MyTable;
 ```
 
 SQL Server Version ≥ 2005

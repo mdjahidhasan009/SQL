@@ -4,13 +4,13 @@ GRANT SELECT, UPDATE
 ON Employees
 TO User1, User2;
 ```
-Grant User1 and User2 permission to perform SELECT and UPDATE operations on table Employees.
+Grant User1 and User2 permission to perform `SELECT` and `UPDATE` operations on table `Employees`.
 ```sql
 REVOKE SELECT, UPDATE
 ON Employees
 FROM User1, User2
 ```
-Revoke from User1 and User2 the permission to perform SELECT and UPDATE operations on table Employees.
+Revoke from User1 and User2 the permission to perform `SELECT` and `UPDATE` operations on table `Employees`.
 
 ## Granting Access to a MySQL Database for a Specific User
 

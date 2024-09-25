@@ -1,10 +1,10 @@
 # Indexes
-Indexes are a data structure that contains pointers to the contents of a table arranged in a speciﬁc order, to help
-the database optimize queries. They are similar to the index of book, where the pages (rows of the table) are
-indexed by their page number.
+Indexes are a data structure that contains pointers to the contents of a table arranged in a specific order, to help
+the database optimize queries. They are similar to the index of book, where the pages (rows of the table) are indexed by
+their page number.
 
 Several types of indexes exist, and can be created on a table. When an index exists on the columns used in a
-query's WHERE clause, JOIN clause, or ORDER BY clause, it can substantially improve query performance.
+queries `WHERE` clause, `JOIN` clause, or `ORDER BY` clause, it can substantially improve query performance.
 
 ## Sorted Index
 If you use an index that is sorted the way you would retrieve it, the SELECT statement would not do additional sorting
@@ -21,23 +21,23 @@ The database system would not do additional sorting, since it can do an index-lo
 ## Partial or Filtered Index
 SQL Server and SQLite allow to create indexes that contain not only a subset of columns, but also a subset of rows.
 
-Consider a constant growing amount of orders with order_state_id equal to ﬁnished (2), and a stable amount of
+Consider a constant growing amount of orders with order_state_id equal to finished (2), and a stable amount of
 orders with order_state_id equal to started (1).
 
-If your business make use of queries like this:
+If you're business make use of queries like this:
 ```sql
 SELECT id, comment
     FROM orders
 WHERE order_state_id = 1
     AND product_id = @some_value;
 ```
-Partial indexing allows you to limit the index, including only the unﬁnished orders:
+Partial indexing allows you to limit the index, including only the unfinished orders:
 ```sql
 CREATE INDEX Started_Orders
         ON orders(product_id)
     WHERE order_state_id = 1;
 ```
-This index will be smaller than an unﬁltered index, which saves space and reduces the cost of updating the index.
+This index will be smaller than an unfiltered index, which saves space and reduces the cost of updating the index.
 
 ## Creating an Index
 ```sql

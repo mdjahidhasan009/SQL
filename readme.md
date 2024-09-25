@@ -227,6 +227,14 @@ window when query is ran again.
 * [MERGE](./merge.md)
 * [CROSS APPLY, OUTER APPLY](./cross_apply_outer_apply.md)
 * [DELETE](./table/delete.md)
+* [TRUNCATE](./table/truncate.md)
+* [DROP TABLE](./table/drop_table.md)
+* [DROP DATABASE](./removing/drop_or_delete_database.md)
+* [CASCADING DELETE](./cascading_delete.md)
+* [GRANT and REVOKE](./grant_revoke.md)
+* [XML](./xml.md)
+* [PRIMARY KEY](./key/primary_key.md)
+* [INDEX](./index_.md)
 
 
 

@@ -6,10 +6,10 @@ CREATE TABLE Employees (
     ...    
 );
 ```
-This will create the Employees table with 'Id' as its primary key. The primary key can be used to uniquely identify the
-rows of a table. Only one primary key is allowed per table.
+This will create the `Employees` table with `'Id'` as its primary key. The primary key can be used to uniquely identify 
+the rows of a table. Only one primary key is allowed per table.
 
-A key can also be composed by one or more ﬁelds, so called composite key, with the following syntax:
+A key can also be composed by one or more fields, so-called composite key, with the following syntax:
 
 ```sql
 CREATE TABLE EMPLOYEE (
@@ -20,29 +20,33 @@ CREATE TABLE EMPLOYEE (
 ```
 
 ## Using Auto Increment
-Many databases allow to make the primary key value automatically increment when a new key is added. This
-ensures that every key is diﬀerent.
-MySQL
+Many databases allow to make the primary key value automatically increment when a new key is added. This ensures that
+every key is different.
+
+**MySQL**
 ```sql
 CREATE TABLE Employees (
     Id int NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (Id)
 );
 ```
-PostgreSQL
+
+**PostgreSQL**
 ```sql
 CREATE TABLE Employees (
     Id SERIAL PRIMARY KEY
 );
 ```
-SQL Server
+
+**SQL Server**
 ```sql
 CREATE TABLE Employees (
     Id int NOT NULL IDENTITY,
     PRIMARY KEY (Id)
 );
 ```
-SQLite
+
+**SQLite**
 ```sql
 CREATE TABLE Employees (
     Id INTEGER PRIMARY KEY
