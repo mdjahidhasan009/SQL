@@ -235,6 +235,11 @@ window when query is ran again.
 * [XML](./xml.md)
 * [PRIMARY KEY](./key/primary_key.md)
 * [INDEX](./index_.md)
+* [ROW NUMBER](./row_number.md)
+* [GROUP_BY_VS_DISTINCT](./group_by_vs_distinct.md)
+* [Finding Duplicates on a Column Subset with Detail](./finding_duplicates_on_a_column_subset_with_detail.md)
+* [String Functions](./string_functions.md)
+* [FUNCTION AGGREGATE](./function/functions_aggregate.md)
 
 
 

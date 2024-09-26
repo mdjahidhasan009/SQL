@@ -1,12 +1,12 @@
 # String Function
 String functions perform operations on string values and return either numeric or string values.
 
-Using string functions, you can, for example, combine data, extract a substring, compare strings, or convert a string
-to all uppercase or lowercase characters.
+Using string functions, you can, for example, combine data, extract a substring, compare strings, or convert a string to
+all uppercase or lowercase characters.
 
 ## Concatenate
-In (standard ANSI/ISO) SQL, the operator for string concatenation is ||. This syntax is supported by all major
-databases except SQL Server:
+In (standard ANSI/ISO) SQL, the operator for string concatenation is `||`. This syntax is supported by all major
+databases except `SQL Server`:
 ```sql
 SELECT 'Hello' || 'World' || '!'; --returns HelloWorld!
 ```
@@ -14,7 +14,7 @@ Many databases support a CONCAT function to join strings:
 ```sql
 SELECT CONCAT('Hello', 'World'); --returns 'HelloWorld'
 ```
-Some databases support using CONCAT to join more than two strings (Oracle does not):
+Some databases support using `CONCAT` to join more than two strings (Oracle does not):
 ```sql
 SELECT CONCAT('Hello', 'World', '!'); --returns 'HelloWorld!'
 ```
@@ -22,8 +22,8 @@ In some databases, non-string types must be cast or converted:
 ```sql
 SELECT CONCAT('Foo', CAST(42 AS VARCHAR(5)), 'Bar'); --returns 'Foo42Bar'
 ```
-Some databases (e.g., Oracle) perform implicit lossless conversions. For example, a CONCAT on a CLOB and NCLOB
-yields a NCLOB. A CONCAT on a number and a varchar2 results in a varchar2, etc.:
+Some databases (e.g., Oracle) perform implicit lossless conversions. For example, a `CONCAT` on a `CLOB` and `NCLOB`
+yields a `NCLOB`. A `CONCAT` on a number and a varchar2 results in a varchar2, etc.:
 ```sql
 SELECT CONCAT(CONCAT('Foo', 42), 'Bar') FROM dual; --returns Foo42Bar
 ```
@@ -45,7 +45,7 @@ The `DATALENGTH` counts the trailing space.
 SELECT DATALENGTH('Hello') -- returns 5
 SELECT DATALENGTH('Hello '); -- returns 6
 ```
-It should be noted though, that DATALENGTH returns the length of the underlying byte representation of the string,
+It should be noted though, that `DATALENGTH` returns the length of the underlying byte representation of the string,
 which depends, i.a., on the charset used to store the string.   
 ```sql
 DECLARE @str varchar(100) = 'Hello ' --varchar is usually an ASCII string, occupying 1 byte per char
@@ -86,7 +86,7 @@ SELECT LOWER('HelloWorld') --returns 'helloworld'
 ```
 
 ## Split
-Splits a string expression using a character separator. Note that STRING_SPLIT() is a table-valued function.
+Splits a string expression using a character separator. Note that `STRING_SPLIT()` is a table-valued function.
 ```sql
 SELECT value FROM STRING_SPLIT('Lorem ipsum dolor sit amet.', ' ');
 ```
@@ -114,7 +114,7 @@ SELECT REPLACE( 'Peter Steve Tom', 'Steve', 'Billy' ) --Return Values: Peter Bil
 ## REGEXP
 MySQL Version ≥ 3.19
 
-Checks if a string matches a regular expression (deﬁned by another string).
+Checks if a string matches a regular expression (defined by another string).
 
 ```sql
 SELECT 'bedded' REGEXP '[a-f]' -- returns True
@@ -178,7 +178,7 @@ SELECT REVERSE('Hello') --returns olleH
 ```
 
 ## REPLICATE
-The REPLICATE function concatenates a string with itself a speciﬁed number of times.
+The REPLICATE function concatenates a string with itself a specified number of times.
 Syntax is:
 ```sql
 REPLICATE ( string-expression , integer )
@@ -227,7 +227,7 @@ We can use a replace function to make permanent changes in our table through fol
 Update Employees
 Set city = (Address, 'South', 'Southern');
 ```
-A more common approach is to use this in conjunction with a WHERE clause like this:
+A more common approach is to use this in conjunction with a `WHERE` clause like this:
 ```sql
 Update Employees
 Set Address = (Address, 'South', 'Southern')
@@ -235,7 +235,7 @@ Where Address LIKE 'South%';
 ```
 
 ## INSTR
-Return the index of the ﬁrst occurrence of a substring (zero if not found)
+Return the index of the first occurrence of a substring (zero if not found)
 Syntax: ``INSTR ( string, substring )``
 
 ```sql
@@ -246,7 +246,7 @@ SELECT INSTR('FooBarBar', 'Xar') -- return 0
 ## PARSENAME
 **DATABASE** : SQL Server
 
-**PARSENAME** function returns the speciﬁc part of given string(object name). object name may contains string like
+**PARSENAME** function returns the specific part of given string(object name). object name may contains string like
 object name,owner name, database name and server name.
 
 **Syntax**
@@ -274,7 +274,7 @@ To get server name use part index 4
 SELECT PARSENAME('ServerName.DatabaseName.SchemaName.ObjectName',4) // returns `ServerName`
 SELECT PARSENAME('[1012-1111].SchoolDatabase.school.Student',4) // returns `[1012-1111]`
 ```
-`PARSENAME` will returns null is speciﬁed part is not present in given object name string
+`PARSENAME` will returns null is specified part is not present in given object name string
 
 
 

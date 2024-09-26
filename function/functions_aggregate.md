@@ -1,4 +1,24 @@
 ## Conditional aggregation
+<details>
+<summary>Payments table creation and data insertion</summary>
+
+```sql
+-- Creating the Payments table
+CREATE TABLE Payments (
+    Customer VARCHAR(50),
+    Payment_type VARCHAR(10),
+    Amount INT
+);
+
+-- Inserting data into the Payments table
+INSERT INTO Payments (Customer, Payment_type, Amount) VALUES
+('Peter', 'Credit', 100),
+('Peter', 'Credit', 300),
+('John', 'Credit', 1000),
+('John', 'Debit', 500);
+```
+</details>
+
 Payments Table
 
 | Customer | Payment_type | Amount |
@@ -12,7 +32,7 @@ Payments Table
 SELECT customer,
        SUM(CASE WHEN payment_type = 'Credit' THEN amount ELSE 0 END) AS credit,
        SUM(CASE WHEN payment_type = 'Debit' THEN amount ELSE 0 END) AS debit
-FROM payments
+FROM Payments
 GROUP BY customer;
 ```
 Result:
@@ -26,7 +46,7 @@ Result:
 SELECT customer,
        SUM(CASE WHEN payment_type = 'Credit' THEN 1 ELSE 0 END) AS credit_transaction_count,
        SUM(CASE WHEN payment_type = 'Debit' THEN 1 ELSE 0 END) AS debit_transaction_count
-FROM payments
+FROM Payments
 GROUP BY customer;
 ```
 Result:
@@ -36,10 +56,11 @@ Result:
 | Peter    | 2                        | 0                       |
 | John     | 1                        | 1                       |
 
+
 ## List Concatenation
 List Concatenation aggregates a column or expression by combining the values into a single string for each group. A
 string to delimit each value (either blank or a comma when omitted) and the order of the values in the result can be
-speciﬁed. While it is not part of the SQL standard, every major relational database vendor supports it in their own
+specified. While it is not part of the SQL standard, every major relational database vendor supports it in their own
 way.
 
 **MySQL**
@@ -192,7 +213,7 @@ FROM EMPLOYEES;
 | 3   |
 (There is one null value managerID column)
 
-You can also use DISTINCT inside of another function such as COUNT to only ﬁnd the DISTINCT members of the
+You can also use DISTINCT inside of another function such as COUNT to only find the DISTINCT members of the
 set to perform the operation on.
 
 For example:
