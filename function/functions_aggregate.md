@@ -135,20 +135,88 @@ GROUP BY ColumnA
 ORDER BY ColumnA;
 ```
 
-## SUM
-Sum function sum the value of all the rows in the group. If the group by clause is omitted then sums all the rows.
+### Example of List Concatenation in MySQL
+
+#### Table Structure and Data Insertion
+
+Let's start with creating a sample table and inserting data to demonstrate the `GROUP_CONCAT` function.
+
 ```sql
-select sum(salary) TotalSalary
-from employees;
+-- Create the example table
+CREATE TABLE Orders (
+    Customer VARCHAR(50),
+    Product VARCHAR(50)
+);
+
+-- Insert sample data into the table
+INSERT INTO Orders (Customer, Product) VALUES
+('Alice', 'Apples'),
+('Alice', 'Bananas'),
+('Alice', 'Cherries'),
+('Bob', 'Dates'),
+('Bob', 'Elderberries'),
+('Carol', 'Figs');
+```
+
+#### MySQL Query Using `GROUP_CONCAT`
+
+```sql
+-- Using GROUP_CONCAT to concatenate products by customer
+SELECT Customer,
+       GROUP_CONCAT(Product ORDER BY Product SEPARATOR ', ') AS Products
+FROM Orders
+GROUP BY Customer
+ORDER BY Customer;
+```
+
+#### Explanation of the Query
+
+1. **GROUP_CONCAT Function**:
+    - `GROUP_CONCAT()` is used to aggregate values from a column into a single string for each group defined by the 
+      `GROUP BY` clause.
+    - The syntax `GROUP_CONCAT(Product ORDER BY Product SEPARATOR ', ')` combines all `Product` values for each `Customer`,
+      ordering them alphabetically and separating them with a comma and space.
+
+2. **ORDER BY within GROUP_CONCAT**:
+    - The `ORDER BY Product` inside `GROUP_CONCAT` ensures that the concatenated values are ordered within each group.
+
+3. **GROUP BY Clause**:
+    - The `GROUP BY Customer` groups the rows by each unique `Customer`, so `GROUP_CONCAT` operates within each group.
+
+4. **Final Output**:
+    - The query outputs each customer along with a list of their ordered products in a single row.
+
+#### Result of the Query
+
+| Customer | Products                    |
+|----------|-----------------------------|
+| Alice    | Apples, Bananas, Cherries   |
+| Bob      | Dates, Elderberries         |
+| Carol    | Figs                        |
+
+#### Summary
+
+- `GROUP_CONCAT` is highly useful for combining values from multiple rows into a single, concatenated string.
+- You can control the order of the concatenated values and the separator used, making it a flexible tool for data 
+  aggregation and reporting in MySQL.
+
+
+
+## SUM
+`SUM` function sum the value of all the rows in the group. If the `GROUP BY` clause is omitted then sums all the rows.
+```sql
+SELECT SELECT(salary) TotalSalary
+FROM employees;
 ```
 | TotalSalary |
 |-------------|
 | 2500        |
 
 ```sql
-select DepartmentId, sum(salary) TotalSalary
-from employees
-group by DepartmentId;
+SELECT DepartmentId, SELECT(salary) AS TotalSalary
+FROM employees
+GROUP BY DepartmentId;
+
 ```    
 
 | DepartmentId | TotalSalary |
@@ -156,8 +224,10 @@ group by DepartmentId;
 | 1            | 2000        |
 | 2            | 500         |
 
+
+
 ## AVG()
-The aggregate function AVG() returns the average of a given expression, usually numeric values in a column.
+The aggregate function `AVG()` returns the average of a given expression, usually numeric values in a column.
 Assume we have a table containing the yearly calculation of population in cities across the world. The records for
 New York City look similar to the ones below:
 
@@ -177,8 +247,10 @@ RESULTS
 |---------------|----------------|
 | New York City | 8,250,754      |
 
-> Note: The AVG() function will convert values to numeric types. This is especially important to keep in mind
-when working with dates.
+> Note: The AVG() function will convert values to numeric types. This is especially important to keep in mind when 
+> working with dates.
+
+
 
 ## Count
 You can count the number of rows:
@@ -237,6 +309,8 @@ include duplicates.
 | AF            |
 | AF            | 
 
+
+
 ## Min
 Syntax
 ```sql
@@ -245,9 +319,10 @@ SELECT MIN(column_name) FROM table_name;
 
 Find the smallest value of column:
 ```sql
-select min(age) from employee;
+SELECT MIN(age) FROM employee;
 ```
-Above example will return smallest value for column age of employee table.
+Above example will return the smallest value for column age of employee table.
+
 
 
 ## Max
@@ -257,9 +332,9 @@ SELECT MAX(column_name) FROM table_name;
 ```
 Find the maximum value of column:
 ```sql
-select max(age) from employee;
+SELECT MAX(age) FROM employee;
 ```
-Above example will return largest value for column age of employee table.
+Above example will return the largest value for column age of employee table.
 
 
 Sources:

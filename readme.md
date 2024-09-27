@@ -240,6 +240,7 @@ window when query is ran again.
 * [Finding Duplicates on a Column Subset with Detail](./finding_duplicates_on_a_column_subset_with_detail.md)
 * [String Functions](./string_functions.md)
 * [FUNCTION AGGREGATE](./function/functions_aggregate.md)
+* [Functions (Scalar/Single Row)](./function/functions_scalar_or_single_row.md)
 
 
 

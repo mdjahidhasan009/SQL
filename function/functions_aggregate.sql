@@ -27,3 +27,30 @@ SELECT
 FROM
     payments
 GROUP BY customer;
+
+
+-- Create the example table
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE Orders (
+    Customer VARCHAR(50),
+    Product VARCHAR(50)
+);
+
+-- Insert sample data into the table
+INSERT INTO Orders (Customer, Product) VALUES
+('Alice', 'Apples'),
+('Alice', 'Bananas'),
+('Alice', 'Cherries'),
+('Bob', 'Dates'),
+('Bob', 'Elderberries'),
+('Carol', 'Figs');
+
+SELECT 
+    Customer,
+    GROUP_CONCAT(Product
+        ORDER BY Product
+        SEPARATOR ', ') AS Products
+FROM
+    Orders
+GROUP BY Customer
+ORDER BY Customer;
