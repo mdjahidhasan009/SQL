@@ -1,7 +1,7 @@
-SQL injection is an attempt to access a website's database tables by injecting SQL into a form ﬁeld. If a web server
+SQL injection is an attempt to access a website's database tables by injecting SQL into a form field. If a web server
 does not protect against SQL injection attacks, a hacker can trick the database into running the additional SQL code.
 By executing their own SQL code, hackers can upgrade their account access, view someone else's private
-information, or make any other modiﬁcations to the database.
+information, or make any other modifications to the database.
 
 ## SQL injection sample
 Assuming the call to your web application's login handler looks like this:

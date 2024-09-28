@@ -150,6 +150,8 @@ I.e. For Week 1 TeamA is on R&R, TeamB is on Day Shift and TeamC is on Night Shi
 
 <img src="./images/common_table_expressions/common_table_expressions.png" alt="common_table_expressions" />
 
+Source: [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
+
 ## Oracle CONNECT BY functionality with recursive CTEs
 Oracle's CONNECT BY functionality provides many useful and nontrivial features that are not built-in when using
 SQL standard recursive CTEs. This example replicates these features (with a few additions for sake of

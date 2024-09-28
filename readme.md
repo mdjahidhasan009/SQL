@@ -241,7 +241,25 @@ window when query is ran again.
 * [String Functions](./string_functions.md)
 * [FUNCTION AGGREGATE](./function/functions_aggregate.md)
 * [Functions (Scalar/Single Row)](./function/functions_scalar_or_single_row.md)
-
+* [Functions (Analytic)](./function/functions_analytic.md)
+* [Window Functions](./function/window_functions.md)
+* [Common Table Expressions](./common_table_expressions.md)
+* [View](./views.md)
+* [Materialized Views](./materialized_views.md)
+* [Comments](./comments.md)
+* [Foreign Keys](./key/foreign_keys.md)
+* [Sequence](./sequence.md)
+* [Subquery](./subqueries.md)
+* [Execution blocks](./execution_blocks.md)
+* [Stored Procedures](./stored_procedures.md)
+* [Triggers](./triggers.md)
+* [Transactions](./transactions.md)
+* [Table Design](./table/table_design.md)
+* [Synonyms](./synonyms.md)
+* [Information Schema](./information_schema.md)
+* [Order of Execution](./order_of_execution.md)
+* [Clean Code SQL](./clean_code_in_SQL.md)
+* [SQL Injection](./SQL_injection.md)
 
 
 

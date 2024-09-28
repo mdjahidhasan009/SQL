@@ -1,53 +1,77 @@
-## Properties of a well designed table
-A true relational database must go beyond throwing data into a few tables and writing some SQL statements to pull
-that data out.
 
-At best a badly designed table structure will slow the execution of queries and could make it impossible for the
-database to function as intended.
+## Properties of a Well-Designed Table
 
+A true relational database must go beyond throwing data into a few tables and writing some SQL statements to pull that data out.
+At best, a badly designed table structure will slow the execution of queries and could make it impossible for the database to function as intended.
 
-A database table should not be considered as just another table; it has to follow a set of rules to be considered truly
-relational. Academically it is referred to as a 'relation' to make the distinction.
+A database table should not be considered just another table; it must follow a set of rules to be considered truly relational. Academically, it is referred to as a 'relation' to make the distinction.
 
-The ﬁve rules of a relational table are:
-1. Each value is atomic; the value in each ﬁeld in each row must be a single value.
-2. Each ﬁeld contains values that are of the same data type.
-3. Each ﬁeld heading has a unique name.
-4. Each row in the table must have at least one value that makes it unique amongst the other records in the
-   table.
-5. The order of the rows and columns has no signiﬁcance.
+### The Five Rules of a Relational Table:
 
-A table conforming to the ﬁve rules:
+1. **Each value is atomic**: The value in each field in each row must be a single value.
+2. **Each field contains values of the same data type**: Ensures consistency within each column.
+3. **Each field heading has a unique name**: Prevents ambiguity in data retrieval.
+4. **Each row must have a unique value**: At least one value in the row must be unique to distinguish it from other records.
+5. **The order of rows and columns has no significance**: The physical arrangement does not impact the data's meaning.
+
+### Example of a Well-Designed Table:
+
+```sql
+-- Creating the Employees table
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(50),
+    DOB DATE,
+    Manager INT
+);
+
+-- Inserting data into Employees table
+INSERT INTO Employees (Id, Name, DOB, Manager) VALUES
+(1, 'Fred', '1971-02-11', 3),
+(2, 'Fred', '1971-02-11', 3),
+(3, 'Sue', '1975-07-08', 2);
+```
 
 | Id  | Name  | DOB          | Manager |
 |-----|-------|--------------|---------|
-| 1   | Fred  | 11/02/1971   | 3       |
-| 2   | Fred  | 11/02/1971   | 3       |
-| 3   | Sue   | 08/07/1975   | 2       |
+| 1   | Fred  | 1971-02-11   | 3       |
+| 2   | Fred  | 1971-02-11   | 3       |
+| 3   | Sue   | 1975-07-08   | 2       |
 
-* Rule 1: Each value is atomic. Id, Name, DOB and Manager only contain a single value.
-* Rule 2: Id contains only integers, Name contains text (we could add that it's text of four characters or less), DOB
-  contains dates of a valid type and Manager contains integers (we could add that corresponds to a Primary Key
-  ﬁeld in a managers table).
-* Rule 3: Id, Name, DOB and Manager are unique heading names within the table.
-* Rule 4: The inclusion of the Id ﬁeld ensures that each record is distinct from any other record within the
-table
+- **Rule 1**: Each value is atomic. Id, Name, DOB, and Manager only contain a single value.
+- **Rule 2**: Fields contain consistent data types: Id (integers), Name (text), DOB (dates), and Manager (integers).
+- **Rule 3**: Field names are unique within the table.
+- **Rule 4**: The Id field ensures each record is distinct.
 
-A badly designed table:
+### Example of a Poorly Designed Table:
 
-| Id | Name | DOB                        | Name  |
-|----|------|----------------------------|-------|
-| 1  | Fred | 11/02/1971                 | 3     |
-| 1  | Fred | 11/02/1971                 | 3     |
-| 3  | Sue  | Friday the 18th July 1975  | 2, 1  |
+```sql
+-- Creating a poorly designed table example
+CREATE TABLE BadTable (
+    Id INT,
+    Name VARCHAR(50),
+    DOB VARCHAR(50),
+    Manager VARCHAR(50)
+);
 
-* Rule 1: The second name ﬁeld contains two values - 2 and 1.
-* Rule 2: The DOB ﬁeld contains dates and text.
-* Rule 3: There's two ﬁelds called 'name'.
-* Rule 4: The ﬁrst and second record are exactly the same.
-* Rule 5: This rule isn't broken.
+-- Inserting problematic data
+INSERT INTO BadTable (Id, Name, DOB, Manager) VALUES
+(1, 'Fred', '11/02/1971', '3'),
+(1, 'Fred', '11/02/1971', '3'),
+(3, 'Sue', 'Friday the 18th July 1975', '2, 1');
+```
 
+| Id | Name | DOB                        | Manager |
+|----|------|----------------------------|---------|
+| 1  | Fred | 11/02/1971                 | 3       |
+| 1  | Fred | 11/02/1971                 | 3       |
+| 3  | Sue  | Friday the 18th July 1975  | 2, 1    |
 
+- **Rule 1 Violated**: Manager contains multiple values (2, 1).
+- **Rule 2 Violated**: DOB contains inconsistent data types (dates and text).
+- **Rule 3 Violated**: The table structure is ambiguous due to naming conflicts.
+- **Rule 4 Violated**: Duplicate records exist.
+- **Rule 5 Not Violated**: The order of rows and columns is inconsequential.
 
 Sources:
 * [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
