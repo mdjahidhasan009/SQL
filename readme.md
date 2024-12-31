@@ -1,3 +1,132 @@
+# Database Design
+Database design is the process of producing a detailed data model of a database. This data model contains all the needed
+logical and physical design choices and physical storage parameters needed to generate a design in a data definition
+language, which can then be used to create a database.
+
+## Importance of Database Design
+
+### Key Benefits
+- **Data Accuracy and Integrity**
+- **Performance and Scalability**
+- **Sensitivity and Security**
+- **Business Intelligence and Reporting**
+- **Decision-Making and Strategy**
+
+## Types of Databases
+
+### Relational Databases
+- Examples: **MySQL**, **Oracle**, **SQL Server**, **Postgres**
+- **Key Features:**
+  - Solid Foundation
+  - Consistent Schema
+  - Query Flexibility
+  - Data Safety (**ACID Compliance**):
+    - In SQL, "write complete" means fully completed.
+    - In NoSQL, "write complete" means eventual consistency, which may not be safe.
+  - Abundant Resources
+  - Requires Effort to Scale
+
+
+### Key-Value Stores
+- Examples: **Redis**, **DynamoDB**, **Memcached**
+- **Key Features:**
+  - Simplicity of Use
+  - Support for Various Data Structures:
+    - Example: **Leaderboard**
+      - Sorted sets automatically maintain data order.
+  - High Read Speed:
+    - Data remains in memory for quick access.
+  - **Durability Weakness:**
+    - **Disadvantage:** If the server stops, all data is lost.
+
+
+### Document Databases
+- Examples: **MongoDB**, **CouchDB**
+- **Key Features:**
+  - Flexible Data Model
+  - Handles Huge Datasets
+  - Sharding and Replication
+  - Denormalization of Data:
+    - **Disadvantage:** Eventual Consistency
+
+
+### Columnar Databases
+- Examples: **HBase**, **Cassandra**
+- **Key Features:**
+  - Most suitable for analytical data
+  - Robust Scalability
+  - Handles Large Volumes of Data:
+    - Ideal for datasets in GB or more.
+  - Optimized for Analytical Queries
+  - **Disadvantage:** Difficult to scale down
+
+
+### Search Databases
+- Examples: **Elasticsearch**, **Apache Solr**
+- Often used alongside the main database for robust search capabilities.
+- **Key Features:**
+  - Full-text search with high performance.
+  - Advanced filtering and aggregation capabilities.
+  - Distributed and scalable architecture for handling large datasets.
+  - Supports near real-time indexing and querying.
+
+
+### Geospatial Databases
+- Example: **PostGIS**
+- **Key Features:**
+  - Spatial data storage and querying capabilities.
+  - Supports complex geospatial queries (e.g., proximity, intersection, and distance).
+  - Used for mapping, geographic information systems (GIS), and location-based services.
+  - Compatible with popular GIS tools and standards.
+
+
+
+### Graph Databases
+- Example: **Neo4j**
+- **Key Features:**
+  - Designed for representing and querying graph structures.
+  - Ideal for use cases like social networks, recommendation systems, and fraud detection.
+  - Efficiently handles relationships between data points with minimal overhead.
+  - Supports Cypher query language for intuitive graph data manipulation.
+
+
+## Why RDBMS is Still Going Strong?
+- 40+ years of R&D and production usage.
+- Widely used, discussed, and actively developed.
+- Knowledge of SQL is a standard skill in the industry.
+- **Key Advantages:**
+  - Robust transactional support (ACID compliance).
+  - Established best practices for schema design.
+  - Mature tools and community support.
+  - Reliable for critical applications like banking, healthcare, and logistics.
+  - Easy integration with analytics and reporting tools.
+
+
+
+## How to Choose a Database
+### Questions to Ask
+
+1. **What type of database is this?**
+  - Relational, Key-Value, Document, Columnar, Graph, etc.
+2. **What was the driving force?**
+  - Understand the purpose behind its development (e.g., scalability, flexibility, or specific use cases).
+3. **How do you talk to it?**
+  - Query language or API (e.g., SQL, NoSQL, GraphQL).
+4. **What makes it unique?**
+  - Identify its differentiators (e.g., ACID compliance, eventual consistency, distributed architecture).
+5. **How does it perform?**
+  - Evaluate its performance for reads, writes, and complex queries.
+6. **How does it scale?**
+  - Vertical scaling (adding resources to a single node) vs. horizontal scaling (adding more nodes).
+  - Check for features like partitioning, sharding, and replication.
+
+
+
+# SQL
+Structured Query Language (SQL) is a special-purpose programming language designed for managing data held in a 
+Relational Database Management System (RDBMS). SQL-like languages can also be used in Relational Data Stream Management
+Systems (RDBMS), or in "not-only SQL" (NoSQL) databases.
+
 | Version  | Short Name | Standard                            | Release Date |
 |----------|------------|-------------------------------------|--------------|
 | 1986     | SQL-86     | ANSI X3.135-1986, ISO 9075:1987     | 1986-01-01   |
@@ -10,15 +139,10 @@
 | 2011     | SQL:2011   | ISO/IEC 9075:2011                   | 2011-12-15   |
 | 2016     | SQL:2016   | ISO/IEC 9075:2016                   | 2016-12-01   |
 
-# SQL
-Structured Query Language (SQL) is a special-purpose programming language designed for managing data held in a Relational 
-Database Management System (RDBMS). SQL-like languages can also be used in Relational Data Stream Management Systems
-(RDBMS), or in "not-only SQL" (NoSQL) databases.
-
-# Statements in SQL
+## Statements in SQL
 ### DDL(Data Definition Language)
-It is used to **define the database structure such as tables**. It includes three statements such as **Create**, **Alter** 
-and **Drop**.
+It is used to **define the database structure such as tables**. It includes three statements such as **Create**, 
+**Alter** and **Drop**.
 
 #### CREATE
 ```sql
@@ -54,9 +178,9 @@ Data Integrity defines the accuracy as well as the consistency of the data store
 integrity constraints to enforce business rules on the data when it is entered into an application or a database.
 
 # Collation
-Collation is defined as a set of rules that determine how data can be sorted as well as compared. Character data is sorted
-using the rules that define the correct character sequence along with options for specifying case-sensitivity, character
-width etc.
+Collation is defined as a set of rules that determine how data can be sorted as well as compared. Character data is 
+sorted using the rules that define the correct character sequence along with options for specifying case-sensitivity, 
+character width etc.
 
 # Datawarehouse
 Datawarehouse refers to a central repository of data where the data is assembled from multiple sources of information. 
@@ -66,8 +190,8 @@ also have a subset of data called Data Marts.
 # User Defined Datatypes
 User defined datatypes let you extend the base SQL Server datatypes by providing a descriptive name, and format to the 
 database. Take for example, in your database, there is a column called `Flight_Num` which appears in many tables. In all 
-these tables it should be `varchar(8)`. In this case you could create a user defined datatype called `Flight_num_type` of
-`varchar(8)` and use it across all your tables.
+these tables it should be `varchar(8)`. In this case you could create a user defined datatype called `Flight_num_type` 
+of `varchar(8)` and use it across all your tables.
 
 ## Isolation levels
 An isolation level determines the degree of isolation of data between concurrent transactions. The default SQL Server 
@@ -78,8 +202,8 @@ the connection level.
 
 ## Active/Active and Active/Passive cluster configurations
 Hopefully you have experience setting up cluster servers. But if you don't, at least be familiar with the way clustering 
-works and the two clustering configurations Active/Active and Active/Passive. SQL Server books online has enough information
-on this topic and there is a good white paper available on Microsoft site.
+works and the two clustering configurations Active/Active and Active/Passive. SQL Server books online has enough 
+information on this topic and there is a good white paper available on Microsoft site.
 
 ## What is a table called, if it has neither Cluster nor Non-cluster Index? What is it used for?
 Unindexed table or Heap. Microsoft Press Books and Book on Line(BOL) refers it as Heap. A heap is a table that does not 
@@ -91,10 +215,10 @@ bulk of inserts and to restore those indexes after that
 
 ## What is a Scheduled Jobs or What is a Scheduled Tasks?
 Scheduled tasks let user automate processes that run on regular or predictable cycles. User can schedule administrative 
-tasks, such as cube processing, to run during times of slow business activity. User can also determine the order in which
-tasks run by creating job steps within a SQL Server Agent job. E.g. back up database, Update Stats of Tables. Job steps 
-give user control over flow of execution. If one job fails, user can configure SQL Server Agent to continue to run the 
-remaining tasks or to stop execution.
+tasks, such as cube processing, to run during times of slow business activity. User can also determine the order in
+which tasks run by creating job steps within a SQL Server Agent job. E.g. back up database, Update Stats of Tables. Job
+steps give user control over flow of execution. If one job fails, user can configure SQL Server Agent to continue to run
+the remaining tasks or to stop execution.
 
 ## How to get @@ERROR and @@ROWCOUNT at the same time?
 If @@Rowcount is checked after Error checking statement then it will have 0 as the value of @@Recordcount as it would 
@@ -264,4 +388,13 @@ window when query is ran again.
 
 
 
+<br/><br/><br/><br/>
 * [SQL Execution Order](./sql_execution_order.md)
+* [tools](./tools.md)
+* [reporting](./reporting.md)
+* [Database Designing Process](./database_designing_process.md)
+
+
+# References
+- [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
+- [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
