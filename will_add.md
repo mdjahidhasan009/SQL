@@ -13,8 +13,10 @@
 ## Advanced Database Concepts
 - **SQL Sharding**
     - Handling nodes and fault tolerance
-- **Flag Table or Report Table**
+- **Flat Table or Report Table**
     - Used for report generation
+    - Flat table is a table that contains all the data in a single table.
+    - Can have a large number of columns like more than 100 columns.
 
 ## Optimizations and Indexing
 - **Generated Columns**

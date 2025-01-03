@@ -392,7 +392,7 @@ window when query is ran again.
 * [SQL Execution Order](./sql_execution_order.md)
 * [tools](./tools.md)
 * [reporting](./reporting.md)
-* [Database Designing Process](./database_designing_process.md)
+* [Database Designing Process](database_designing_process.md)
 
 
 # References

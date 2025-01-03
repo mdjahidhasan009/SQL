@@ -1,3 +1,5 @@
+# Database Designing Process
+
 ## Unnamed System
 
 > **Customer does not know what they need.**
@@ -45,7 +47,7 @@ We need a system with the following features:
 * Logical Design
 * Physical Design
 
-<img src="./images/database_designing_process/img.webp" alt="Database Designing Process" />
+<img src="images/database_designing_process/img.webp" alt="Database Designing Process" />
 
 Source: Database Systems Design, Implementation, and Management by Carlos Coronel, Steven Morris 13th Edition
 
@@ -54,7 +56,7 @@ Source: Database Systems Design, Implementation, and Management by Carlos Corone
 
 ## 1. Requirement Collection & Analysis
 
-Discover **information** that is required to **manage** to run the operations while **maintaining** **policies and 
+Discover **information** that is required to **manage** to run the operations while **maintaining policies and 
 regulations**.
 
 ### Site Visit/In-depth Interview
@@ -77,11 +79,13 @@ Analyze existing documentation and tools such as:
 
 ### Persona Interview
 
-> An archetype of a user that helps designers and developers empathize by understanding their user’s business and personal contexts.
+> An archetype of a user that helps designers and developers empathize by understanding their user’s business and 
+> personal contexts.
 
 ### Prepare Wireframe
 
-- **Interactive Wireframe (Figma):** Simulate user activities.
+- **Interactive Wireframe (Figma):** 
+  - Simulate user activities.
 - **Low-Fidelity Design:**
    - Easy to change.
    - Avoid irrelevant feedback.
@@ -94,12 +98,18 @@ Engage in continuous iterations to refine the understanding of requirements.
 ### Outcome of Requirement Collection & Analysis
 
 - Identified data requirements.
+  - What data must be available?
+  - How this information (and their modifications) will satisfy the business operations end-to-end.
 - Defined relationships between data elements.
-- Documentation: BRS (Business Requirement Specification) and SRS (System Requirement Specification).
+- Documentation: **BRS** (Business Requirement Specification) and **SRS** (System Requirement Specification).
 
 ---
 
 ## 2. Conceptual Data Model
+
+<img src="./images/database_designing_process/img2.png" alt="img" width="400px" />
+
+Source: [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
 - Define entities.
 - Identify attributes for each entity.
@@ -121,6 +131,10 @@ Engage in continuous iterations to refine the understanding of requirements.
 ## 3. Logical Data Model
 
 > Transitioning from high-level conceptual schema to implementable database structures.
+
+<img src="./images/database_designing_process/img3.png" alt="img" width="400px" />
+
+Source: [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
 - **Define Tables, Columns, Keys, and Relationships:**
    - Mapping super-type entities.
@@ -174,3 +188,8 @@ Engage in continuous iterations to refine the understanding of requirements.
 
 - **https://www.mysql.com/products/enterprise/monitor.html**: For performance monitoring.
 - **https://www.pgadmin.org/**: For managing PostgreSQL databases.
+
+
+
+# References
+- [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
