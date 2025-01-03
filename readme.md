@@ -139,7 +139,154 @@ Systems (RDBMS), or in "not-only SQL" (NoSQL) databases.
 | 2011     | SQL:2011   | ISO/IEC 9075:2011                   | 2011-12-15   |
 | 2016     | SQL:2016   | ISO/IEC 9075:2016                   | 2016-12-01   |
 
-## Statements in SQL
+## Table
+
+> A table is a collection of related data held in a structured format within a database. It consists of rows and columns.
+
+| ID   | Name   | DOB        | Email                 | Department |
+|------|--------|------------|-----------------------|------------|
+| 1003 | Rahman | 03-08-1988 | rahman@company.com    | HR         |
+| 1004 | Sattar | 01-02-1993 | sattar@company.com    | AUDIT      |
+| 1007 | Gafur  | 13-04-2003 | gafur@company.com     | HR         |
+
+## Row
+
+> A row is a single record in a table. It contains data for each column defined in the table AKA Tuple, Record.
+
+| ID       | Name       | DOB            | Email                  | Department |
+|----------|------------|----------------|------------------------|------------|
+| 1003     | Rahman     | 03-08-1988     | rahman@company.com     | HR         |
+| **1004** | **Sattar** | **01-02-1993** | **sattar@company.com** | **AUDIT**  |
+| 1007     | Gafur      | 13-04-2003     | gafur@company.com      | HR         |
+
+## Attribute
+
+> An Attribute is a property or characteristic that describes an entity. In this table, the entity is Employee, and the
+> attributes are as follows:
+
+| ID       | Name       | DOB            | Email                  | Department |
+|----------|------------|----------------|------------------------|------------|
+| 1003     | Rahman     | 03-08-1988     | rahman@company.com     | HR         |
+| **1004** | **Sattar** | **01-02-1993** | **sattar@company.com** | **AUDIT**  |
+| 1007     | Gafur      | 13-04-2003     | gafur@company.com      | HR         |
+
+#### **Attributes**
+1. **ID**: A unique identifier for each employee (e.g., 1003, 1004, 1007).
+2. **Name**: The name of the employee (e.g., Rahman, Sattar, Gafur).
+3. **DOB (Date of Birth)**: The birth date of the employee (e.g., 03-08-1988, 01-02-1993, 13-04-2003).
+4. **Email**: The email address of the employee (e.g., rahman@company.com, sattar@company.com, gafur@company.com).
+5. **Department**: The department where the employee works (e.g., HR, AUDIT).
+
+#### Attribute Types from the Table
+- **Simple Attributes**:
+  - ID, Name, DOB, Department
+- **Derived Attribute**:
+  - **Age** (could be derived from DOB)
+- **Key Attribute**:
+  - ID (unique for each employee)
+
+
+### **Cardinality and Degree in ER Models**
+
+---
+
+#### **Cardinality**
+| Type           | Description                                                                                  | Example                                                                                 |
+|----------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| **One-to-One** | Each entity instance in Entity A is related to at most one entity instance in Entity B, and vice versa. | Each **employee** is assigned exactly one **desk**, and each desk belongs to one employee. |
+| **One-to-Many**| An instance of Entity A can be associated with many instances of Entity B, but an instance of Entity B is associated with at most one instance of Entity A. | A **manager** supervises many **employees**, but each employee reports to one manager. |
+| **Many-to-Many**| An instance of Entity A can be associated with many instances of Entity B, and vice versa. | **Students** enroll in many **courses**, and each course has many students. |
+
+---
+
+#### **Degree**
+| Degree             | Description                                            | Example                                                                                   |
+|--------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| **Unary**          | A relationship exists within the same entity set.      | An **employee** supervises another employee.                                              |
+| **Binary**         | A relationship exists between two different entity sets.| A **student** enrolls in a **course**.                                                   |
+| **Ternary**        | A relationship exists among three different entity sets.| A **teacher** teaches a **subject** to a **student**.                                     |
+| **n-ary**          | A relationship exists among "n" different entity sets. | A **supplier** supplies a **product** to a **warehouse** for a **customer** (degree 4).   |
+
+---
+
+**Note**:
+- **Cardinality** is represented near the relationship lines (e.g., 1 or N) in ER diagrams.
+- **Degree** is determined by counting the number of entities connected to the relationship.
+
+
+### **Cardinality and Degree in SQL Tables**
+#### **Cardinality**
+**Definition**: Cardinality in SQL refers to the number of rows in a table or the uniqueness of the values in a column.
+
+1. **High Cardinality**: Columns with a large number of unique values.
+  - **Example**: `Email` column in an `employees` table.
+  - **Use Case**: Suitable for primary keys or unique constraints.
+
+2. **Low Cardinality**: Columns with very few unique values.
+  - **Example**: `Department` column in an `employees` table (e.g., HR, IT, AUDIT).
+  - **Use Case**: Useful for grouping or filtering data.
+
+3. **Zero Cardinality**: When no rows exist in a table.
+  - **Example**: A new table created without any data.
+
+---
+
+#### **Degree**
+**Definition**: The degree of a table refers to the number of columns (attributes) in the table.
+
+1. **Unary Table (Degree 1)**:
+  - A table with only one column.
+  - **Example**:
+    ```sql
+    CREATE TABLE Department (
+      DepartmentName VARCHAR(50)
+    );
+    ```
+
+2. **Binary Table (Degree 2)**:
+  - A table with two columns.
+  - **Example**:
+    ```sql
+    CREATE TABLE Employee (
+      EmployeeID INT,
+      Name VARCHAR(50)
+    );
+    ```
+
+3. **Ternary Table (Degree 3)**:
+  - A table with three columns.
+  - **Example**:
+    ```sql
+    CREATE TABLE Borrow (
+      BookID INT,
+      MemberID INT,
+      BorrowDate DATE
+    );
+    ```
+
+4. **n-ary Table (Degree n)**:
+  - A table with "n" columns.
+  - **Example**:
+    ```sql
+    CREATE TABLE Employees (
+      EmployeeID INT,
+      Name VARCHAR(50),
+      DOB DATE,
+      Email VARCHAR(100),
+      Department VARCHAR(50)
+    );
+    ```
+
+---
+
+**Summary**:
+- **Cardinality** in SQL describes the number of rows or unique values in a column.
+- **Degree** in SQL represents the number of columns in a table.
+
+
+
+
+# Statements in SQL
 ### DDL(Data Definition Language)
 It is used to **define the database structure such as tables**. It includes three statements such as **Create**, 
 **Alter** and **Drop**.
