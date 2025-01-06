@@ -47,7 +47,7 @@ We need a system with the following features:
 * Logical Design
 * Physical Design
 
-<img src="images/database_designing_process/img.webp" alt="Database Designing Process" />
+<img src="../images/database_designing_process/img.webp" alt="Database Designing Process" />
 
 Source: Database Systems Design, Implementation, and Management by Carlos Coronel, Steven Morris 13th Edition
 
@@ -107,7 +107,7 @@ Engage in continuous iterations to refine the understanding of requirements.
 
 ## 2. Conceptual Data Model
 
-<img src="./images/database_designing_process/img2.png" alt="img" width="400px" />
+<img src="../images/database_designing_process/img2.png" alt="img" width="400px" />
 
 Source: [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -132,7 +132,7 @@ Source: [Database for Software Developers - ostad](https://ostad.app/course/data
 
 > Transitioning from high-level conceptual schema to implementable database structures.
 
-<img src="./images/database_designing_process/img3.png" alt="img" width="400px" />
+<img src="../images/database_designing_process/img3.png" alt="img" width="400px" />
 
 Source: [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 

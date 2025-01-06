@@ -58,7 +58,7 @@
 - May not have a key attribute.
 - Represented using a double rectangle.
 
-<img src="../images/ERD/ER_diagram_guide/img.png" alt="er" width="500px"/>
+<img src="../../images/ERD/ER_diagram_guide/img.png" alt="er" width="500px"/>
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -97,7 +97,7 @@ Weak entities rely on a strong entity for identification and are connected via a
 - These information or properties are required to operate the target system.
 - Represented with an oval in the ER diagram.
 
-<img src="../images/ERD/ER_diagram_guide/img2.webp" alt="img" width="700px"/>
+<img src="../../images/ERD/ER_diagram_guide/img2.webp" alt="img" width="700px"/>
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -117,7 +117,7 @@ Source: - [Database for Software Developers - ostad](https://ostad.app/course/da
 - **Stored:** Independent information. Need to be stored. e.g. Date of Birth.
 - **Derived:** Can/should be calculated from other attributes. e.g. Age. Represented as a dotted oval.
 
-<img src="../images/ERD/ER_diagram_guide/img3.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img3.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -125,7 +125,7 @@ Source: - [Database for Software Developers - ostad](https://ostad.app/course/da
 
 Key Attribute: Attribute that identifies entries uniquely - NID, Roll Number.
 
-<img src="../images/ERD/ER_diagram_guide/img4.png" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img4.png" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -141,7 +141,7 @@ When an attribute value
 - Existence unknown.
 - Exits but missing.
 
-<img src="../images/ERD/ER_diagram_guide/img5.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img5.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -150,8 +150,8 @@ Source: - [Database for Software Developers - ostad](https://ostad.app/course/da
 - Describes purposeful connection between entities.
 - Represented with a diamond in the ER diagram.
 
-<img src="../images/ERD/ER_diagram_guide/img6.webp" alt="img" width="700px" />
-<img src="../images/ERD/ER_diagram_guide/img7.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img6.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img7.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -183,7 +183,7 @@ indicates whether all or only some entities in an entity set are involved in a r
 - **Partial Participation**: Only some entities in the entity set participate in the relationship.
 - **Total Participation**: All entities in the entity set must participate in the relationship.
 
-<img src="../images/ERD/ER_diagram_guide/img10.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img10.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -203,7 +203,7 @@ their own.
 
 Associative entities are inside rectangle like borrow.
 
-<img src="../images/ERD/ER_diagram_guide/img11.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img11.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -221,7 +221,7 @@ entity type and its more specific subtypes.
 "Digital Production" is a type of production, and "Physical Production" is another type. Both are subtypes of the 
 general "Production" entity.
 
-<img src="../images/ERD/ER_diagram_guide/img12.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img12.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -232,15 +232,15 @@ Source: - [Database for Software Developers - ostad](https://ostad.app/course/da
 - **Overlapping**: An entity occurrence can be a member of more than one of the subclasses (AND).  
   **Example**: A person can be both a teacher and a researcher simultaneously.
 
-<img src="../images/ERD/ER_diagram_guide/img13.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img13.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
 ### Diagram Notation
 
-<img src="../images/ERD/ER_diagram_guide/img14.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img14.webp" alt="img" width="700px" />
 
-<img src="../images/ERD/ER_diagram_guide/img15.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img15.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 
@@ -259,7 +259,7 @@ Total Participation’s identifying relationship
 9. When he finishes the course, a grade (such as A or B) and a mark (such as 60 percent) are recorded.
 10. Each course in a program is sequenced into a year(for example, year 1) and a semester(for example, semester1)
 
-<img src="../images/ERD/ER_diagram_guide/img16.webp" alt="img" width="700px" />
+<img src="../../images/ERD/ER_diagram_guide/img16.webp" alt="img" width="700px" />
 
 Source: - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
 

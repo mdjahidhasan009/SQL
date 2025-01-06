@@ -537,9 +537,9 @@ window when query is ran again.
 
 <br/><br/><br/><br/>
 * [SQL Execution Order](./sql_execution_order.md)
-* [tools](./tools.md)
-* [reporting](./reporting.md)
-* [Database Designing Process](database_designing_process.md)
+* [tools](Database_For_Software_Developer/tools.md)
+* [reporting](Database_For_Software_Developer/reporting.md)
+* [Database Designing Process](Database_For_Software_Developer/database_designing_process.md)
 
 
 # References
