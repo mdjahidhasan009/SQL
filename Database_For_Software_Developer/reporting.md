@@ -29,3 +29,6 @@
     - Generating operational and strategic business reports.
     - Supporting analytics dashboards with quick data retrieval.
     - Consolidating data for end-user queries in a BI environment.
+
+# References
+- [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
