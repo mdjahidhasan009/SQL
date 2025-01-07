@@ -591,3 +591,8 @@ To handle this situation efficiently:
 ---
 
 By following these practices, you can optimize performance and avoid unexpected issues when joining tables with `VARCHAR` columns of different sizes.
+
+
+
+# References
+- [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)

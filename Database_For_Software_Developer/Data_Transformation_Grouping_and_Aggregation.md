@@ -734,3 +734,5 @@ GROUP BY product_line;
 
 
 
+# References
+- [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
