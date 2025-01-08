@@ -229,5 +229,120 @@ import topic for interview
 
 ⇒ grouping, ordering
 
+
+
+
+# **Purging, Archiving, and Partitioning**
+
+## **1. Data Purging**
+Data purging refers to the process of permanently removing or deleting irrelevant, obsolete, or redundant data from a 
+database, system, or data repository.
+
+### **Why is Data Purging Important?**
+- **Optimize Storage Space:** Frees up valuable storage by removing unnecessary data.
+- **Enhance Performance:** Reduces database size, leading to faster query execution.
+- **Maintain Data Accuracy:** Eliminates outdated or incorrect information.
+- **Compliance and Security:** Helps meet data retention policies and securely deletes unnecessary data.
+
+### **Steps in Data Purging**
+1. **Identify Data for Purging:** Define rules to classify obsolete data.
+2. **Backup Critical Data:** Ensure important data is archived before purging.
+3. **Implement Purging Rules:** Use scripts or tools to delete data based on criteria.
+4. **Test the Purge Process:** Verify correctness in a test environment.
+5. **Execute the Purge:** Perform during non-peak hours to minimize disruptions.
+6. **Monitor and Validate:** Ensure only intended data is deleted.
+
+### **Example SQL Query for Data Purging**
+```sql
+-- Purge data older than a specific date
+DELETE FROM orders
+WHERE order_date < '2023-01-01';
+```
+
+---
+
+## **2. Data Archiving**
+Data archiving refers to the process of moving data that is no longer actively used to a separate storage system for 
+long-term retention.
+
+### **Benefits of Data Archiving**
+- **Data Retention:** Ensures historical data is available for reference or compliance.
+- **Storage Optimization:** Frees up space in active systems by moving less-used data.
+- **Cost Savings:** Uses cheaper storage solutions for archived data.
+
+### **Steps in Data Archiving**
+1. **Identify Archivable Data:** Determine which data should be archived.
+2. **Choose an Archive Location:** Decide where archived data will be stored (e.g., cloud storage, tape).
+3. **Move Data:** Use ETL tools or database commands to move data.
+4. **Test and Validate:** Ensure data integrity during and after the archive process.
+
+### **Example of Data Archiving in SQL**
+```sql
+-- Move archived data to a separate table
+INSERT INTO archived_orders
+SELECT * FROM orders
+WHERE order_date < '2023-01-01';
+
+-- Delete data from the original table
+DELETE FROM orders
+WHERE order_date < '2023-01-01';
+```
+
+---
+
+## **3. Data Partitioning**
+Partitioning is a database management technique where large tables are divided into smaller, more manageable pieces, 
+called partitions.
+
+### **Types of Partitioning**
+1. **Range Partitioning:** Divides data based on a range of values.
+   ```sql
+   CREATE TABLE orders (
+       order_id INT,
+       order_date DATE
+   ) PARTITION BY RANGE (YEAR(order_date)) (
+       PARTITION p2021 VALUES LESS THAN (2022),
+       PARTITION p2022 VALUES LESS THAN (2023)
+   );
+   ```
+2. **List Partitioning:** Divides data based on a list of values.
+3. **Hash Partitioning:** Uses a hash function to evenly distribute data.
+4. **Composite Partitioning:** Combines two or more partitioning strategies.
+
+### **Benefits of Partitioning**
+- **Improved Query Performance:** Queries can scan specific partitions instead of the entire table.
+- **Efficient Data Management:** Easier to manage subsets of data individually.
+- **Storage Optimization:** Allows different partitions to be stored on separate storage devices.
+
+---
+
+## **Comparison: Purging vs. Archiving vs. Partitioning**
+
+| **Aspect**         | **Purging**                            | **Archiving**                           | **Partitioning**                             |
+|--------------------|----------------------------------------|-----------------------------------------|----------------------------------------------|
+| **Purpose**        | Deletes obsolete data permanently.     | Moves data to long-term storage.        | Splits data into smaller, manageable parts.  |
+| **Recoverability** | Data cannot be recovered.              | Data is recoverable from archive.       | Data remains accessible within partitions.   |
+| **Use Case**       | Optimize storage, enhance performance. | Retain historical data for reference.   | Improve query performance and manageability. |
+| **Impact**         | Irreversible.                          | Data is stored elsewhere.               | Transparent to end-users.                    |
+
+---
+
+## **Best Practices**
+1. **For Purging:**
+  - Define clear rules and test before executing.
+  - Ensure compliance with data retention policies.
+2. **For Archiving:**
+  - Use cost-effective storage solutions.
+  - Maintain data integrity during migration.
+3. **For Partitioning:**
+  - Choose the partitioning type based on query patterns.
+  - Monitor and maintain partitions for optimal performance.
+
+---
+
+By effectively implementing purging, archiving, and partitioning, organizations can optimize their database management,
+ensure data compliance, and enhance system performance.
+
+
 # References
 - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
