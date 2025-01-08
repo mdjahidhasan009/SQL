@@ -191,21 +191,21 @@ Systems (RDBMS), or in "not-only SQL" (NoSQL) databases.
 ---
 
 #### **Cardinality**
-| Type           | Description                                                                                  | Example                                                                                 |
-|----------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| **One-to-One** | Each entity instance in Entity A is related to at most one entity instance in Entity B, and vice versa. | Each **employee** is assigned exactly one **desk**, and each desk belongs to one employee. |
-| **One-to-Many**| An instance of Entity A can be associated with many instances of Entity B, but an instance of Entity B is associated with at most one instance of Entity A. | A **manager** supervises many **employees**, but each employee reports to one manager. |
-| **Many-to-Many**| An instance of Entity A can be associated with many instances of Entity B, and vice versa. | **Students** enroll in many **courses**, and each course has many students. |
+| Type             | Description                                                                                                                                                 | Example                                                                                    |
+|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| **One-to-One**   | Each entity instance in Entity A is related to at most one entity instance in Entity B, and vice versa.                                                     | Each **employee** is assigned exactly one **desk**, and each desk belongs to one employee. |
+| **One-to-Many**  | An instance of Entity A can be associated with many instances of Entity B, but an instance of Entity B is associated with at most one instance of Entity A. | A **manager** supervises many **employees**, but each employee reports to one manager.     |
+| **Many-to-Many** | An instance of Entity A can be associated with many instances of Entity B, and vice versa.                                                                  | **Students** enroll in many **courses**, and each course has many students.                |
 
 ---
 
 #### **Degree**
-| Degree             | Description                                            | Example                                                                                   |
-|--------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| **Unary**          | A relationship exists within the same entity set.      | An **employee** supervises another employee.                                              |
-| **Binary**         | A relationship exists between two different entity sets.| A **student** enrolls in a **course**.                                                   |
-| **Ternary**        | A relationship exists among three different entity sets.| A **teacher** teaches a **subject** to a **student**.                                     |
-| **n-ary**          | A relationship exists among "n" different entity sets. | A **supplier** supplies a **product** to a **warehouse** for a **customer** (degree 4).   |
+| Degree             | Description                                              | Example                                                                                    |
+|--------------------|----------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| **Unary**          | A relationship exists within the same entity set.        | An **employee** supervises another employee.                                               |
+| **Binary**         | A relationship exists between two different entity sets. | A **student** enrolls in a **course**.                                                     |
+| **Ternary**        | A relationship exists among three different entity sets. | A **teacher** teaches a **subject** to a **student**.                                      |
+| **n-ary**          | A relationship exists among "n" different entity sets.   | A **supplier** supplies a **product** to a **warehouse** for a **customer** (degree 4).    |
 
 ---
 

@@ -109,6 +109,142 @@ CREATE TABLE ExampleTable (
 );
 ```
 
+---
+
+### Floating Point Problems in SQL
+
+Floating-point numbers are commonly used in SQL to store decimal values, but they can introduce inaccuracies due to the 
+way floating-point arithmetic works. Floating-point numbers in SQL (and programming in general) are represented in
+binary, which can lead to rounding errors when performing calculations. Here’s a detailed explanation:
+
+### Common Issues with Floating-Point Numbers:
+
+1. **Inaccuracy in Representation**:
+    - Not all decimal numbers can be precisely represented in binary format.
+    - For example:
+        - `0.1 + 0.2` might not equal `0.3` exactly due to how these numbers are stored internally.
+
+2. **Rounding Errors**:
+    - Arithmetic operations on floating-point numbers can result in slight inaccuracies.
+    - Example:
+      ```sql
+      SELECT 0.1 + 0.2 AS result; -- Might return something like 0.30000000000000004
+      ```
+
+3. **Comparison Problems**:
+    - Direct comparison of floating-point numbers can fail due to small inaccuracies.
+    - Example:
+      ```sql
+      SELECT CASE 
+          WHEN 0.1 + 0.2 = 0.3 THEN 'Equal'
+          ELSE 'Not Equal'
+      END AS comparison_result; -- May return 'Not Equal'
+      ```
+
+4. **Aggregate Functions**:
+    - Summing a large number of floating-point values can lead to cumulative rounding errors.
+    - Example:
+      ```sql
+      SELECT SUM(price) AS total_price FROM products; -- Result might have small inaccuracies.
+      ```
+
+---
+
+### Best Practices to Handle Floating-Point Issues:
+
+1. **Use Decimal/Fixed-Point Data Types Instead of Float**:
+    - Use `DECIMAL` (or `NUMERIC`) data type for exact numeric values.
+    - Example:
+      ```sql
+      CREATE TABLE products (
+          id INT PRIMARY KEY,
+          price DECIMAL(10, 2) -- Exact precision with two decimal places
+      );
+      ```
+    - `DECIMAL` stores numbers as exact values, avoiding rounding issues.
+
+2. **Avoid Direct Comparisons**:
+    - Use a tolerance (epsilon) for comparing floating-point numbers.
+    - Example:
+      ```sql
+      SELECT CASE 
+          WHEN ABS(0.1 + 0.2 - 0.3) < 0.00001 THEN 'Equal'
+          ELSE 'Not Equal'
+      END AS comparison_result;
+      ```
+
+3. **Round Values Explicitly**:
+    - Use `ROUND()` function to round results to the desired precision.
+    - Example:
+      ```sql
+      SELECT ROUND(0.1 + 0.2, 2) AS rounded_result; -- Returns 0.30
+      ```
+
+4. **Be Cautious with Aggregations**:
+    - If using `SUM()` or other aggregate functions, ensure rounding is applied if accuracy is critical.
+    - Example:
+      ```sql
+      SELECT ROUND(SUM(price), 2) AS total_price FROM products;
+      ```
+
+5. **Convert Float to Decimal When Necessary**:
+    - If you have floating-point numbers in your database and need accurate calculations, convert them to `DECIMAL` for processing.
+    - Example:
+      ```sql
+      SELECT CAST(price AS DECIMAL(10, 2)) AS accurate_price FROM products;
+      ```
+
+6. **Store Data Accurately**:
+    - Always use the most appropriate data type for the data being stored:
+        - Use `DECIMAL` for monetary values.
+        - Use `FLOAT` or `DOUBLE` for scientific calculations where small errors are acceptable.
+
+---
+
+### Example Problem and Solution:
+
+#### Problem:
+You have a table storing floating-point prices, and a query is summing these prices, resulting in slight inaccuracies.
+
+```sql
+CREATE TABLE sales (
+    id INT PRIMARY KEY,
+    price FLOAT
+);
+
+INSERT INTO sales VALUES (1, 0.1), (2, 0.2), (3, 0.3);
+
+SELECT SUM(price) AS total_price FROM sales;
+-- Result: 0.6000000000000001 (inaccurate)
+```
+
+#### Solution:
+1. Change the data type of the `price` column to `DECIMAL`:
+   ```sql
+   ALTER TABLE sales MODIFY price DECIMAL(10, 2);
+   ```
+
+2. Recalculate the sum:
+   ```sql
+   SELECT SUM(price) AS total_price FROM sales;
+   -- Result: 0.60 (accurate)
+   ```
+
+---
+
+### When to Use FLOAT/DOUBLE:
+- For scientific or engineering calculations where slight inaccuracies are acceptable.
+- When working with very large or very small numbers that require a wide range of values.
+
+### When to Use DECIMAL:
+- For financial or monetary calculations where exact precision is required.
+- For any data that must be stored and retrieved with exact accuracy.
+
+By following these practices, you can minimize floating-point issues in SQL and ensure your calculations are as accurate 
+as possible.
+
+
+
 ### REAL
 - **`REAL`** is similar to `FLOAT`, but it has a lower level of precision.
 - It is a single-precision floating-point number that typically uses 32 bits (4 bytes) to store the value.
@@ -275,3 +411,4 @@ SELECT
 
 Sources:
 * [SQL Notes for Professionals](https://goalkicker.com/SQLBook)
+* [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
