@@ -344,5 +344,104 @@ By effectively implementing purging, archiving, and partitioning, organizations 
 ensure data compliance, and enhance system performance.
 
 
+
+
+# Data Migration Strategy: SQL Server to MySQL
+
+## Context
+Previously, the database was managed using SQL Server, which has grown to a size of 15-20 GB. Now, we plan to transition
+to MySQL for storing new data while retaining the SQL Server database for historical data. This ensures efficient
+management of old and new records without disrupting existing workflows.
+
+## Strategy Overview
+
+### 1. **Old Data in SQL Server**
+- **Purpose**: The SQL Server database will continue to store historical data. Users can query this database for records
+  created before the migration.
+- **Approach**:
+  - The SQL Server database remains operational for read-only purposes. This prevents any accidental modifications to 
+    historical data.
+  - Create views or APIs to allow seamless querying of historical records from SQL Server when needed.
+  - Maintain proper documentation of the schema and metadata for reference during future data extraction or analysis
+    tasks.
+  - Regularly back up the SQL Server database to ensure data safety.
+  - Optimize the SQL Server for read-heavy operations by creating indexes and optimizing queries used for accessing 
+    historical data.
+  - Establish user access policies to restrict modifications, ensuring the integrity of the historical data.
+  - Use reporting or analytics tools to generate insights from the historical data without affecting operational 
+    workflows.
+  - **Handling Write Operations**:
+    - If any write operations are required on the historical data in SQL Server:
+      1. Extract the relevant data from SQL Server.
+      2. Transfer the extracted data into MySQL.
+      3. Perform the write operation in the MySQL database.
+      4. Delete the corresponding data from SQL Server to ensure consistency and prevent duplication.
+- **Benefits**:
+  - Avoids the immediate need for migrating a large dataset (15-20 GB) into MySQL.
+  - Ensures continuity of existing processes reliant on SQL Server.
+  - Preserves historical data integrity and provides a fallback for audit or compliance needs.
+
+### 2. **New Data in MySQL**
+- **Purpose**: All new data will be stored in the MySQL database starting from the last record in SQL Server. This 
+  ensures continuity and prevents duplication.
+- **Approach**:
+  - Design the MySQL database schema to match the requirements of new data while considering the schema of the SQL 
+    Server database.
+    - Map similar fields between SQL Server and MySQL.
+    - Ensure that MySQL schema incorporates optimizations for the types of queries and operations expected on the new 
+      data.
+  - Configure auto-increment values in MySQL tables to start from the last known record ID in SQL Server, ensuring no 
+    conflicts or overlaps.
+  - Develop middleware or APIs to direct all new data writes to MySQL. This ensures a seamless transition for
+    applications.
+  - Test and validate data insertion workflows in MySQL to ensure performance and data integrity.
+  - Regularly monitor and optimize the MySQL database for performance by indexing frequently queried columns and
+    analyzing query patterns.
+  - Establish a process for periodic backups of the MySQL database to ensure data safety.
+  - **Ensuring Zero Downtime During Data Transfer**:
+    - Use database replication tools to replicate SQL Server data into MySQL in real-time or near real-time.
+    - Implement a dual-write mechanism during the transition phase to ensure updates are written to both databases.
+    - Gradually switch read operations to MySQL as confidence in the system grows.
+    - Monitor and validate data consistency throughout the transition process.
+- **Benefits**:
+  - Leverages the advantages of MySQL, such as scalability, open-source flexibility, and community support, for managing
+    future data growth.
+  - Reduces dependency on SQL Server for new operations, simplifying the technology stack.
+  - Ensures efficient management of data growth by segregating new and old data.
+
+## Optional Data Consolidation
+To consolidate old data into the new MySQL database, an ETL (Extract, Transform, Load) process can be employed. This can
+be done incrementally or for specific datasets as needed.
+
+### ETL Process Overview
+1. **Extract**:
+  - Use an ETL tool (e.g., Talend, Apache Nifi, or custom scripts) to extract data from SQL Server.
+  - Extract data incrementally to avoid impacting SQL Server’s performance.
+
+2. **Transform**:
+  - Map SQL Server schema to MySQL schema.
+  - Clean and validate data to ensure compatibility with MySQL.
+
+3. **Load**:
+  - Import transformed data into the MySQL database.
+  - Ensure referential integrity and avoid duplicate records.
+
+## Implementation Steps
+- **Step 1**: Close SQL Server for write operations and make it read-only.
+- **Step 2**: Configure MySQL to handle all new data operations.
+- **Step 3**: If necessary, set up the ETL process to migrate selected historical data from SQL Server to MySQL.
+- **Step 4**: Document the workflow and maintain logs for auditing and troubleshooting purposes.
+
+## Tools and Recommendations
+- **ETL Tools**: Talend, Apache Nifi, or custom Python scripts with libraries like `pymssql` and
+  `mysql-connector-python`.
+- **APIs**: Use REST APIs or GraphQL for data access across both databases.
+- **Monitoring**: Set up monitoring for both databases to ensure performance and availability.
+
+---
+This strategy provides a balanced approach to manage both historical and new data efficiently, ensuring continuity while
+leveraging the strengths of both SQL Server and MySQL.
+
+
 # References
 - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
