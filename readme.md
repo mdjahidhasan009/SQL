@@ -25,6 +25,7 @@ language, which can then be used to create a database.
     - In NoSQL, "write complete" means eventual consistency, which may not be safe.
   - Abundant Resources
   - Requires Effort to Scale
+  - MySQL supports full text search, geospatial queries, and JSON data types.
 
 
 ### Key-Value Stores
@@ -38,6 +39,9 @@ language, which can then be used to create a database.
     - Data remains in memory for quick access.
   - **Durability Weakness:**
     - **Disadvantage:** If the server stops, all data is lost.
+- Redis
+  - Key-Value Store
+  - Has set, sorted set, hash table data structures, linked lists, and more.
 
 
 ### Document Databases
@@ -47,7 +51,9 @@ language, which can then be used to create a database.
   - Handles Huge Datasets
   - Sharding and Replication
   - Denormalization of Data:
-    - **Disadvantage:** Eventual Consistency
+    - **Disadvantage:** Eventual Consistency means if write operation is completed means data get received by database
+      and eventually it will be available to read. If there are load on the server, it may take time to get the data.
+  - MongoDB supports full text search, geospatial queries, and aggregation.
 
 
 ### Columnar Databases
@@ -69,6 +75,12 @@ language, which can then be used to create a database.
   - Advanced filtering and aggregation capabilities.
   - Distributed and scalable architecture for handling large datasets.
   - Supports near real-time indexing and querying.
+  - Synonym supports, typo tolerance, and relevance ranking.
+- MySQL, MongoDB both have full-text search capabilities, but Elasticsearch is more powerful. Like when we are getting
+  search result inside our threshold(like 500ms to 1s), we can use MySQL or MongoDB. But when it taking more time like
+  4s, 5s, 6s, we can use Elasticsearch.
+- Another scenario like database is small but we perform more write operation that's why full text search becoming slow
+  in MySQL or MongoDB, then we can use Elasticsearch.
 
 
 ### Geospatial Databases
@@ -101,6 +113,29 @@ language, which can then be used to create a database.
   - Reliable for critical applications like banking, healthcare, and logistics.
   - Easy integration with analytics and reporting tools.
 
+```shell
+
+Encryption ------\                                                                          /----------Vertical Scaling
+Authentication-- /-------- Security                                       Scalability------\-----------Horizontal Scaling
+Access Control--/                 \                                   /                     \----------Thundering Herd
+                                   \                                 / 
+Open Source----------\              \                               /                         /---------Large Dataset Support
+Proprietary Licence- / --- Cost      \                             /       Performance-------\----------Handle of Complex Query
+Free----------------/          \      \                           /       /                  \----------Fast
+                                   \   \                         /      /                     \---------Efficient 
+                                     \  \                       /     /
+                                       \ \                     /    /
+                                      /    Database deciding Factors
+                                   /              /              \    \
+Strong -----------\             /                /                \    \                      /---------ACID
+Growing-----------/-- Community                 /                  \ Data Consistency---------\---------BASE
+Developer Rich---/                             /                    \                          \--------Accuracy of data
+                                              /                      \ 
+Third-Party Ingegration------------\         /                        \                        /---------Relational
+Plagins----------------------------/-- Ecosystem                     Data Model---------z-------\---------NoSQL
+Ingegration with Cloud Providers--/                                                             \--------Document 
+Cloud Native---------------------/                                                               \-------Key-Value
+```
 
 
 ## How to Choose a Database
