@@ -516,7 +516,7 @@ window when query is ran again.
 * [Window Functions](./function/window_functions.md)
 * [Common Table Expressions](./common_table_expressions.md)
 * [View](./views.md)
-* [Materialized Views](./materialized_views.md)
+* [Materialized Views](view/materialized_views.md)
 * [Comments](./comments.md)
 * [Foreign Keys](./key/foreign_keys.md)
 * [Sequence](./sequence.md)

@@ -122,7 +122,7 @@ are to be returned, thus no performance hit for using `*`. Similarly `COUNT(*)` 
 return any of the columns, so only needs to read and process those that are used for filtering purposes.
 
 
-## SELECT Using Column Aliases
+## SELECT Using Column  Aliases
 Column aliases are used mainly to shorten code and make column names more readable.
 
 Code becomes shorter as long table names and unnecessary identification of columns (e.g., there may be 2 IDs in the
