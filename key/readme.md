@@ -43,5 +43,33 @@ A Composite primary key is a set of columns whose values uniquely identify every
 table which contains composite primary key will be indexed based on columns specified in the primary key. This key will
 be referred in Foreign Key tables.
 
+
+
+## Primary Key vs. Foreign Key
+
+| Feature               | Primary Key                                               | Foreign Key                                                                                                        |
+|-----------------------|-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **Purpose**           | Focuses on uniqueness within the table.                   | Establishes a link to another table.                                                                               |
+| **Nullability**       | Cannot be null.                                           | Can be null.                                                                                                       |
+| **Data Type**         | Typically an integer, but can be other data types.        | Should match the data type of the primary key it references.                                                       |
+| **Number per Table**  | One primary key per table.                                | Multiple foreign keys can exist in a single table.                                                                 |
+| **Requirement**       | Every table must have a primary key to identify records.  | Not compulsory to have in every table. Only needed when a relationship needs to be established with another table. |
+| **Relationship**      | N/A                                                       | A field in the table that is the primary key in another table.                                                     |
+
+
+
+## Primary Key vs. Candidate Key vs. Unique Key
+
+| Feature              | Primary Key                                                                      | Candidate Key                                                                                                                   | Unique Key                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| **Purpose**          | Focuses on uniqueness within the table.                                          | Focuses on uniqueness in the table and offers a single key or a group of multiple keys that uniquely identify rows in a table.  | Focuses on uniqueness in the table and offers a single key or a group of multiple keys that uniquely identify rows in a table. |
+| **Nullability**      | Cannot be null.                                                                  | Cannot be null.                                                                                                                 | Can be null.                                                                                                                   |
+| **Data Type**        | Typically an integer, but can be other data types.                               | Can be an integer or a string.                                                                                                  | Can be an integer or a string.                                                                                                 |
+| **Number per Table** | One primary key per table.                                                       | Multiple candidate keys can exist in a single table.                                                                            | Multiple unique keys can exist in a single table.                                                                              |
+| **Usage**            | To identify any record, a primary key is a must, and every table must have one.  | To identify any record, we can use any one candidate key.                                                                       | To identify any record, we can use any one unique key.                                                                         |
+| **Selection**        | One candidate key is chosen as the primary key                                   |                                                                                                                                 |                                                                                                                                |
+
+
 Source:
 * https://www.interviewbit.com/dbms-interview-questions/
+* [MySQL Interview Questions and Answers | MySQL Interview Preparation | Freshers & Experienced](https://www.youtube.com/watch?v=9hfjC-BpY20)

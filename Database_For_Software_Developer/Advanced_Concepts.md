@@ -24,6 +24,17 @@ They have a small footprint. Table-level locking limits the performance in read/
 
 ⇒ can use full text search
 
+## InnoDB vs MyISAM
+
+| InnoDB                                                                                        | MyISAM                                                                         |
+|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| MySQL 8.0 current version: Default storage engine                                             | Prior to MySQL 5.5: It was default storage engine                              |
+| It provides the standard ACID-compliant transaction features, along with foreign key support. | It is not ACID compliant and even it does not support relationship constraint. |
+| Supports Transaction Features like Rollback and Commit                                        | No Transaction Feature                                                         |
+| Supports Row Level Locking                                                                    | Supports Table Level Locking                                                   |
+| No Full Text Search                                                                           | Supports Full Text Search                                                      |
+
+
 ### Memory
 
 Stores all data in RAM, for fast access in enviroments that require quick lookups of non-critical data.
@@ -445,3 +456,4 @@ leveraging the strengths of both SQL Server and MySQL.
 
 # References
 - [Database for Software Developers - ostad](https://ostad.app/course/database-for-developer)
+- [MySQL Interview Questions and Answers | MySQL Interview Preparation | Freshers & Experienced](https://www.youtube.com/watch?v=9hfjC-BpY20)
