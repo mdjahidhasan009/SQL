@@ -1,3 +1,6 @@
+# hospital.db
+## Easy
+
 ### Example 1
 Show first name, last name, and gender of patients whose gender is 'M'
 ```sql
@@ -519,9 +522,8 @@ from (
 
 ## Hard
 ### Example 43
-Show all of the patients grouped into weight groups.
-Show the total amount of patients in each weight group.
-Order the list by the weight group decending.
+Show all of the patients grouped into weight groups. Show the total amount of patients in each weight group. Order the
+list by the weight group decending.
 
 For example, if they weight 100 to 109 they are placed in the 100 weight group, 110-119 = 110 weight group, etc.
 ```sql
@@ -683,9 +685,50 @@ SELECT CONCAT(
 FROM patients;
 ```
 
-### Example 51
+### Example 51 ////Tricky
 For each day display the total amount of admissions on that day. Display the amount changed from the previous date.
-2:9:40
+```sql
+select admission_date, 
+count(*) as admission_day,
+count(admission_date) - lag(count(admission_date)) over(order by admission_date) as change
+from admissions group by admission_date
+```
+
+### Example 52
+Sort the province names in ascending order in such a way that the province 'Ontario' is always on top.
+```sql
+select province_name
+from province_names
+order by
+    case
+        when province_name = 'Ontario' then 4
+        else province_name
+        end
+```
+
+### Example 53
+We need a breakdown for the total amount of admissions each doctor has started each year. Show the doctor_id, 
+doctor_full_name, specialty, year, total_admissions for that year.
+```sql
+SELECT
+    d.doctor_id,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_name,
+    d.specialty,
+    YEAR(a.admission_date) AS selected_year,
+    COUNT(*) AS total_admissions
+FROM doctors d
+    JOIN admissions a ON d.doctor_id = a.attending_doctor_id
+GROUP BY
+    selected_year,
+    d.doctor_id
+```
+
+2:21:48
+
+
+
+
 
 ## References
 - https://www.sql-practice.com/
+- [Solve 70 SQL Questions in 3 hrs | Ultimate SQL Practice | Master SQL](https://www.youtube.com/watch?v=nYmoQ4r0DVw)
