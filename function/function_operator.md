@@ -20,7 +20,8 @@ operator on the result of the two select statements, then we will get all the re
 
 ## UNION vs. UNION ALL in MySQL
 
-Both `UNION` and `UNION ALL` are used in MySQL to combine the results of two or more `SELECT` statements into a single result set. However, they differ in how they handle duplicate rows.
+Both `UNION` and `UNION ALL` are used in MySQL to combine the results of two or more `SELECT` statements into a single
+result set. However, they differ in how they handle duplicate rows.
 
 **`UNION`:**
 
@@ -34,7 +35,8 @@ Both `UNION` and `UNION ALL` are used in MySQL to combine the results of two or 
 
 **Example:**
 
-Let's say we have two tables, `customers_us` and `customers_eu`, containing customer information from the US and Europe, respectively.
+Let's say we have two tables, `customers_us` and `customers_eu`, containing customer information from the US and Europe,
+respectively.
 
 **Table: `customers_us`**
 
@@ -79,7 +81,8 @@ SELECT customer_id, customer_name, city FROM customers_eu;
 *   The `UNION` combined the results from both tables.
 *   The duplicate row `(1, 'John Doe', 'New York')` from `customers_us` was removed.
 *   The duplicate row `(7, 'John Doe', 'London')` from `customers_eu` was removed.
-*   The result set was sorted by default (you can't see the sort order explicitly in this example but it's implicitly performed).
+*   The result set was sorted by default (you can't see the sort order explicitly in this example, but it's implicitly
+    performed).
 
 **2. Using `UNION ALL`:**
 
@@ -107,18 +110,24 @@ SELECT customer_id, customer_name, city FROM customers_eu;
 *   The `UNION ALL` combined the results from both tables.
 *   The duplicate row `(4, 'John Doe', 'New York')` from `customers_us` was *included* in the result set.
 *   The duplicate row `(7, 'John Doe', 'London')` from `customers_eu` was *included* in the result set.
-*   The result set was *not* sorted (the order reflects the order of the `SELECT` statements and the order within each table).
+*   The result set was *not* sorted (the order reflects the order of the `SELECT` statements and the order within each 
+    table).
 
 **When to Use `UNION` vs. `UNION ALL`:**
 
-*   **`UNION`:** Use when you need to ensure that the final result set contains only unique rows and sorting is required.
-*   **`UNION ALL`:** Use when you want to include all rows, including duplicates, and sorting isn't important.  `UNION ALL` is generally faster, especially for large datasets, because it avoids the overhead of removing duplicates and sorting.  Only use `UNION ALL` if it is acceptable to have duplicate results in the output.
+*   **`UNION`:** Use when you need to ensure that the final result set contains only unique rows and sorting is 
+    required.
+*   **`UNION ALL`:** Use when you want to include all rows, including duplicates, and sorting isn't important.  `UNION 
+    ALL` is generally faster, especially for large datasets, because it avoids the overhead of removing duplicates and
+    sorting.  Only use `UNION ALL` if it is acceptable to have duplicate results in the output.
 
 **Important Considerations:**
 
 *   The `SELECT` statements in a `UNION` or `UNION ALL` must have the same number of columns.
-*   The corresponding columns in each `SELECT` statement must have compatible data types.  MySQL will attempt to perform implicit conversions, but it's best to ensure the data types are aligned.
-*   Column names in the final result set are usually derived from the first `SELECT` statement. If you want different column names, you can use aliases in the first `SELECT` statement.
+*   The corresponding columns in each `SELECT` statement must have compatible data types.  MySQL will attempt to perform
+    implicit conversions, but it's best to ensure the data types are aligned.
+*   Column names in the final result set are usually derived from the first `SELECT` statement. If you want different 
+    column names, you can use aliases in the first `SELECT` statement.
 
 ```sql
 SELECT customer_id AS id, customer_name AS name, city AS location FROM customers_us

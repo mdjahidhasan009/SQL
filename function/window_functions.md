@@ -352,6 +352,7 @@ INSERT INTO Data (User_ID, Completion_Date) VALUES
 (2, '2016-07-20'),
 (2, '2016-07-21'),
 (2, '2016-07-22');
+```
 
 
 Sources:

@@ -141,7 +141,8 @@ Systems (RDBMS), or in "not-only SQL" (NoSQL) databases.
 
 ## Table
 
-> A table is a collection of related data held in a structured format within a database. It consists of rows and columns.
+> A table is a collection of related data held in a structured format within a database. It consists of rows and 
+> columns.
 
 | ID   | Name   | DOB        | Email                 | Department |
 |------|--------|------------|-----------------------|------------|
